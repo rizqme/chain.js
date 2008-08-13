@@ -198,8 +198,8 @@ $.Chain.service('update', {
 		this.element.items('update');
 		this.element.item('update');
 		
+		this.element.triggerHandler('preupdate', this.element.item());
 		this.element.triggerHandler('update', this.element.item());
-		this.element.triggerHandler('updated', this.element.item());
 		
 		return this.element;
 	}
@@ -227,10 +227,7 @@ $.Chain.service('chain', {
 		else
 		{
 			if(typeof obj == 'function')
-				this.builder = obj;
-			else if(obj === true)
-				this.builder = this.defaultBuilder;
-			
+				this.builder = this.createBuilder(obj);
 			this.anchor.empty();
 		}
 		
@@ -279,15 +276,24 @@ $.Chain.service('chain', {
 	},
 	
 	// Builder, not executable
-	defaultBuilder: function()
+	defaultBuilder: function(builder)
 	{
-		$(this).update(function(event, data){
-			var self = $(this);
-			for(var i in data)
-			{
-				self.find('.'+i).text(data[i]).val(data[i]).end();
-			}
-		});
+		var res = builder ? (builder.apply($(this)) === false) : true;
+		
+		if(res)
+			$(this).update(function(event, data){
+				var self = $(this);
+				for(var i in data)
+				{
+					self.find('.'+i).text(data[i]).val(data[i]).end();
+				}
+			});
+	},
+	
+	createBuilder: function(builder)
+	{
+		var defBuilder = this.defaultBuilder;
+		return function(){defBuilder.apply(this, [builder])};
 	},
 	
 	setAnchor: function(anchor)
@@ -448,7 +454,11 @@ $.Chain.service('items', {
 	$merge: function(items)
 	{
 		this.isActive = true;
-		this.buffer = this.buffer.concat(items);
+		
+		if($.Chain.jobject(items))
+			this.buffer = this.buffer.concat(items.map(function(){return $(this).item()}).get());
+		else if(items instanceof Array)
+			this.buffer = this.buffer.concat(items);
 		this.update();
 		
 		return this.element;
@@ -458,7 +468,12 @@ $.Chain.service('items', {
 	{
 		this.isActive = true;
 		this.empty();
-		this.buffer = items;
+		
+		if($.Chain.jobject(items))
+			this.buffer = items.map(function(){return $(this).item()}).get();
+		else if(items instanceof Array)
+			this.buffer = items;
+		
 		this.update();
 		
 		return this.element;
@@ -553,9 +568,14 @@ $.Chain.service('item', {
 		}
 		
 		if(this.isActive)
-			return this.datafn.call(this.element, this.data);
+			return this.callData();
 		else
 			return false;
+	},
+	
+	callData: function()
+	{
+		return this.datafn.call(this.element, this.data);
 	},
 	
 	dataHandler: function(a, b)
@@ -568,7 +588,7 @@ $.Chain.service('item', {
 	
 	update: function()
 	{
-		this.element.update();
+		return this.element.update();
 	},
 	
 	build: function()
@@ -591,13 +611,13 @@ $.Chain.service('item', {
 	
 	$update: function()
 	{
-		if(this.element.chain('active') && this.isActive && !this.isBuilt && this.data)
+		if(this.element.chain('active') && this.isActive && !this.isBuilt && this.callData())
 			this.build();
 		
 		return this.element;
 	},
 	
-	$replace: function()
+	$replace: function(obj)
 	{
 		this.data = obj;
 		this.isActive = true;
@@ -635,8 +655,176 @@ $.Chain.service('item', {
 	{
 		this.isBuilt = false;
 	}
+});
+
+$.Chain.extend('items', {
+	doFilter: function()
+	{
+		var props = this.searchProperties;
+		var text = this.searchText;
+		
+		if(text)
+		{
+			var items = this.element.items(true).filter(function(){
+				var data = $(this).item();
+				if(props)
+				{
+					for(var i=0; i<props.length; i++)
+						if(typeof data[i] == 'string' && !!data[i].match(text))
+							return true;
+				}
+				else
+				{
+					for(var i in data)
+						if(typeof data[i] == 'string' && !!data[i].match(text))
+							return true;
+				}
+			});
+			this.element.items(true).not(items).hide();
+			items.show();
+		}
+		else
+		{
+			this.element.items(true).show();
+			this.element.unbind('preupdate', this.searchBinding);
+			this.searchBinding = null;
+		}
+	},
 	
+	$filter: function(text, properties)
+	{
+		if(!text && text !== null && text !== false)
+			return this.update();
+		
+		this.searchText = text;
+		
+		if(typeof properties == 'text')
+			this.searchProperties = [properties];
+		else if(properties instanceof Array)
+			this.searchProperties = properties;
+		else
+			this.searchProperties = null;
+		
+		if(!this.searchBinding)
+		{
+			var self = this;
+			this.searchBinding = function(event, item){self.doFilter();};
+			this.element.bind('preupdate', this.searchBinding);
+		}
+		
+		return this.update();
+	},
 	
+	doSort: function()
+	{
+		var name = this.sortName;
+		var opt = this.sortOpt;
+		
+		var sorter = 
+		{
+			'number': function(a, b){
+				return parseFloat(($(a).item()[name]+'').match(/\d+/gi)[0])
+					> parseFloat(($(b).item()[name]+'').match(/\d+/gi)[0]);
+			},
+		
+			'default': function(a, b){
+				return $(a).item()[name] > $(b).item()[name];
+			}
+		};
+		
+		if(name)
+		{
+			var array = this.element.items(true).get().sort(sorter[opt.type] || sorter['default']);
+			
+			array = opt.desc ? array.reverse() : array;
+			
+			for(var i=0; i<array.length; i++)
+				this.element.chain('anchor').append(array[i]);
+			
+			opt.desc = opt.toggle ? !opt.desc : opt.desc;
+		}
+		else
+		{
+			this.element.unbind('preupdate', this.sortBinding);
+			this.sortBinding = null;
+		}
+	},
+	
+	$sort: function(name, opt)
+	{
+		if(!name && name !== null && name !== false)
+			return this.update();
+		
+		this.sortName = name;
+		this.sortOpt = $.extend({desc:false, type:'default', toggle:false}, opt);
+		
+		if(!this.sortBinding)
+		{
+			var self = this;
+			this.sortBinding = function(event, item){self.doSort();};
+			this.element.bind('preupdate', this.sortBinding);
+		}
+		
+		return this.update();
+	}
+});
+
+$.Chain.extend('items', {
+	$link: function(element, fn)
+	{
+		if(this.linkElement)
+			this.linkElement.unbind('update', this.linkFunction);
+		
+		element = $(element);
+		if(element.length && typeof fn == 'function')
+		{
+			var self = this;
+			this.linkElement = element;
+			this.linkFunction = function()
+			{
+				try{self.$replace(fn.apply(self.element, [self.linkElement]));}catch(e){self.$empty()}
+			};
+			
+			this.linkElement.bind('update', this.linkFunction);
+			this.linkFunction();
+		}
+		
+		return this.element;
+	}
+});
+
+$.Chain.extend('item', {
+	$link: function(element, fn)
+	{
+		if(this.linkElement)
+		{
+			this.datafn = this.linkDataFn || this.dataHandler;
+			this.linkElement.unbind('update', this.linkFunction);
+		}
+		
+		element = $(element);
+		if(element.length && typeof fn == 'function')
+		{
+			var self = this;
+			
+			this.isActive = true;
+			this.linkElement = element;
+			this.linkDataFn = this.datafn;
+			
+			this.datafn = function()
+			{
+				try{return $.extend({}, fn.apply(self.element, [self.linkElement]));}catch(e){return {};};
+			};
+			this.linkFunction = function()
+			{
+				self.update();
+			};
+			
+			this.linkElement.bind('update', this.linkFunction);
+		}
+		
+		return this.element;
+	}
 });
 	
 })(jQuery);
