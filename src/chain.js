@@ -43,21 +43,54 @@ $.Chain.service('chain', {
 		for(var i in rules)
 		{
 			if(typeof rules[i] == 'string')
+			{
 				rules[i] = $.Chain.parse(rules[i]);
+			}
+			else if(typeof rules[i] == 'object')
+			{
+				for(var j In rules[i])
+				{
+					if(typeof rules[i][j] == 'string')
+						rules[i][j] = $.Chain.parse(rules[i][j]);
+				}
+			}
 		}
 	
 		var fn = function(event, data)
 		{
-			var el, val;	
+			var el, val;
+			var self = $(this);
 			for(var i in rules)
 			{
-				el = $(i, this);
+				el = $(i, self);
 			
 				if (typeof rules[i] == 'function')
 				{
-					val = rules[i].apply($(this), [data]);
+					val = rules[i].apply(self, [data]);
 					if(typeof val == 'string')
 						el.text(val).val(val);
+				}
+				else if(typeof rules[i] == 'object')
+				{
+					for(var j in rules[i])
+					{
+						if (typeof rules[i][j] == 'function')
+						{
+							val = rules[i][j].apply(self, [data]);
+							if(typeof val == 'string')
+							{
+								if(j == 'content')
+									el.text(val);
+								else if(j == 'value')
+									el.val(val);
+								else if(j == 'class' || j == 'className')
+									el.addClass(val);
+								else
+									el.attr(j, val);
+							}
+							
+						}
+					}
 				}
 			}
 		};
