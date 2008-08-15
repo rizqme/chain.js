@@ -238,7 +238,7 @@ $.Chain.service('chain', {
 	{
 		this.anchor = this.element;
 		this.template = this.anchor.html();
-		this.builder = this.defaultBuilder;
+		this.builder = this.createBuilder();
 		this.plugins = {};
 		this.isActive = false;
 	},
@@ -293,13 +293,14 @@ $.Chain.service('chain', {
 		{
 			var el, val;
 			var self = $(this);
+			var anchor = self.chain('anchor');
 			for(var i in rules)
 			{
-				el = $(i, self);
+				el = $(i, anchor);
 			
 				if (typeof rules[i] == 'function')
 				{
-					val = rules[i].apply(self, [data]);
+					val = rules[i].apply(self, [data, el]);
 					if(typeof val == 'string')
 						el.text(val).val(val);
 				}
@@ -309,7 +310,7 @@ $.Chain.service('chain', {
 					{
 						if (typeof rules[i][j] == 'function')
 						{
-							val = rules[i][j].apply(self, [data]);
+							val = rules[i][j].apply(self, [data, el]);
 							if(typeof val == 'string')
 							{
 								if(j == 'content')
@@ -328,26 +329,25 @@ $.Chain.service('chain', {
 			}
 		};
 	
-		this.builder = function()
+		this.builder = function(anchor)
 		{
 			if(builder)
-				builder.apply($(this));
+				builder.apply(this, [anchor]);
 			$(this).update(fn);
 		};
 	},
 	
 	// Builder, not executable
-	defaultBuilder: function(builder)
+	defaultBuilder: function(builder, anchor)
 	{
-		var res = builder ? (builder.apply($(this)) !== false) : true;
+		var res = builder ? (builder.apply($(this), [anchor]) !== false) : true;
 		
 		if(res)
 			$(this).update(function(event, data){
-				var self = $(this);
 				for(var i in data)
 				{
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
-						self.find('.'+i).text(data[i]).val(data[i]).end();
+						anchor.find('.'+i).text(data[i]).val(data[i]).end();
 				}
 			});
 	},
@@ -355,7 +355,7 @@ $.Chain.service('chain', {
 	createBuilder: function(builder)
 	{
 		var defBuilder = this.defaultBuilder;
-		return function(){defBuilder.apply(this, [builder])};
+		return function(anchor){defBuilder.apply(this, [builder, anchor])};
 	},
 	
 	setAnchor: function(anchor)
@@ -814,11 +814,11 @@ $.Chain.service('item', {
 		{
 			var plugins = this.root.chain('plugin');
 			for(var i in plugins)
-				plugins[i].apply(this.element);
+				plugins[i].apply(this.element, [this.element.chain('anchor')]);
 			
 		}
 		
-		this.element.chain('builder').apply(this.element.chain('anchor'));
+		this.element.chain('builder').apply(this.element, [this.element.chain('anchor')]);
 		this.isBuilt = true;
 		
 		var self = this;
