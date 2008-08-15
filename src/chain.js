@@ -5,7 +5,7 @@ $.Chain.service('chain', {
 	{
 		this.anchor = this.element;
 		this.template = this.anchor.html();
-		this.builder = this.createBuilder();
+		this.builder = this.defaultBuilder;
 		this.plugins = {};
 		this.isActive = false;
 	},
@@ -60,14 +60,13 @@ $.Chain.service('chain', {
 		{
 			var el, val;
 			var self = $(this);
-			var anchor = self.chain('anchor');
 			for(var i in rules)
 			{
-				el = $(i, anchor);
+				el = $(i, self);
 			
 				if (typeof rules[i] == 'function')
 				{
-					val = rules[i].apply(self, [data, el]);
+					val = rules[i].apply(self, [data]);
 					if(typeof val == 'string')
 						el.text(val).val(val);
 				}
@@ -77,7 +76,7 @@ $.Chain.service('chain', {
 					{
 						if (typeof rules[i][j] == 'function')
 						{
-							val = rules[i][j].apply(self, [data, el]);
+							val = rules[i][j].apply(self, [data]);
 							if(typeof val == 'string')
 							{
 								if(j == 'content')
@@ -96,25 +95,26 @@ $.Chain.service('chain', {
 			}
 		};
 	
-		this.builder = function(anchor)
+		this.builder = function()
 		{
 			if(builder)
-				builder.apply(this, [anchor]);
+				builder.apply($(this));
 			$(this).update(fn);
 		};
 	},
 	
 	// Builder, not executable
-	defaultBuilder: function(builder, anchor)
+	defaultBuilder: function(builder)
 	{
-		var res = builder ? (builder.apply($(this), [anchor]) !== false) : true;
+		var res = builder ? (builder.apply($(this)) !== false) : true;
 		
 		if(res)
 			$(this).update(function(event, data){
+				var self = $(this);
 				for(var i in data)
 				{
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
-						anchor.find('.'+i).text(data[i]).val(data[i]).end();
+						self.find('.'+i).text(data[i]).val(data[i]).end();
 				}
 			});
 	},
@@ -122,7 +122,7 @@ $.Chain.service('chain', {
 	createBuilder: function(builder)
 	{
 		var defBuilder = this.defaultBuilder;
-		return function(anchor){defBuilder.apply(this, [builder, anchor])};
+		return function(){defBuilder.apply(this, [builder])};
 	},
 	
 	setAnchor: function(anchor)
