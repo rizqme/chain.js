@@ -120,7 +120,10 @@ $.Chain.service('items', {
 	
 	$reorder: function(item1, item2)
 	{
-		this.handler(item1).before(this.handler(item2));
+		if(item2)
+			this.handler(item1).before(this.handler(item2));
+		else
+			this.handler(item1).appendTo(this.element.chain('anchor'));
 		this.update();
 		
 		return this.element;
@@ -251,7 +254,9 @@ $.Chain.extend('items', {
 		
 		if(name)
 		{
-			var array = this.element.items(true).get().sort(sorter[opt.type] || sorter['default']);
+			var sortfn = opt.fn || sorter[opt.type] || sorter['default'];
+				
+			var array = this.element.items(true).get().sort(sortfn);
 			
 			array = opt.desc ? array.reverse() : array;
 			
@@ -284,7 +289,7 @@ $.Chain.extend('items', {
 		
 		return this.update();
 	}
-})
+});
 
 // Linking extension
 $.Chain.extend('items', {
