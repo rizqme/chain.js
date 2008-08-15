@@ -87,9 +87,11 @@ $.Chain.service('item', {
 	$remove: function()
 	{
 		this.element.remove();
-		if(this.root)
+		if(!$.Chain.jidentic(this.root, this.element))
 			this.root.update();
-		this.root = null;
+		
+		if(this.$link)
+			this.$link(null, null);
 	},
 	
 	$active: function()
