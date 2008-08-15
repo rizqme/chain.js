@@ -48,7 +48,7 @@ $.Chain.service('chain', {
 			}
 			else if(typeof rules[i] == 'object')
 			{
-				for(var j In rules[i])
+				for(var j in rules[i])
 				{
 					if(typeof rules[i][j] == 'string')
 						rules[i][j] = $.Chain.parse(rules[i][j]);
@@ -106,7 +106,7 @@ $.Chain.service('chain', {
 	// Builder, not executable
 	defaultBuilder: function(builder)
 	{
-		var res = builder ? (builder.apply($(this)) === false) : true;
+		var res = builder ? (builder.apply($(this)) !== false) : true;
 		
 		if(res)
 			$(this).update(function(event, data){
