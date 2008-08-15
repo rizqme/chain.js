@@ -346,7 +346,8 @@ $.Chain.service('chain', {
 				var self = $(this);
 				for(var i in data)
 				{
-					self.find('.'+i).text(data[i]).val(data[i]).end();
+					if(typeof data[i] != 'object' && typeof data[i] != 'function')
+						self.find('.'+i).text(data[i]).val(data[i]).end();
 				}
 			});
 	},
