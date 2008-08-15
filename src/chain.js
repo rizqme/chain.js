@@ -5,7 +5,7 @@ $.Chain.service('chain', {
 	{
 		this.anchor = this.element;
 		this.template = this.anchor.html();
-		this.builder = this.defaultBuilder;
+		this.builder = this.createBuilder();
 		this.plugins = {};
 		this.isActive = false;
 	},
@@ -95,18 +95,18 @@ $.Chain.service('chain', {
 			}
 		};
 	
-		this.builder = function()
+		this.builder = function(root)
 		{
 			if(builder)
-				builder.apply($(this));
+				builder.apply(this, [root]);
 			$(this).update(fn);
 		};
 	},
 	
 	// Builder, not executable
-	defaultBuilder: function(builder)
+	defaultBuilder: function(builder, root)
 	{
-		var res = builder ? (builder.apply($(this)) !== false) : true;
+		var res = builder ? (builder.apply(this, [root]) !== false) : true;
 		
 		if(res)
 			$(this).update(function(event, data){
@@ -122,7 +122,7 @@ $.Chain.service('chain', {
 	createBuilder: function(builder)
 	{
 		var defBuilder = this.defaultBuilder;
-		return function(){defBuilder.apply(this, [builder])};
+		return function(root){defBuilder.apply(this, [builder, root])};
 	},
 	
 	setAnchor: function(anchor)

@@ -59,11 +59,11 @@ $.Chain.service('item', {
 		{
 			var plugins = this.root.chain('plugin');
 			for(var i in plugins)
-				plugins[i].apply(this.element);
+				plugins[i].apply(this.element, [this.root]);
 			
 		}
 		
-		this.element.chain('builder').apply(this.element);
+		this.element.chain('builder').apply(this.element, [this.root]);
 		this.isBuilt = true;
 		
 		var self = this;
