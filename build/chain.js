@@ -301,7 +301,7 @@ $.Chain.service('chain', {
 				{
 					val = rules[i].apply(self, [data]);
 					if(typeof val == 'string')
-						el.text(val).val(val);
+						el.not(':input').html(val).end().filter(':input').val(val);
 				}
 				else if(typeof rules[i] == 'object')
 				{
@@ -313,6 +313,8 @@ $.Chain.service('chain', {
 							if(typeof val == 'string')
 							{
 								if(j == 'content')
+									el.html(val);
+								else if(j == 'text')
 									el.text(val);
 								else if(j == 'value')
 									el.val(val);
