@@ -14,33 +14,54 @@ $.Chain.service('item', {
 	{
 		if(typeof obj == 'object')
 		{
-			this.data = this.datafn.call(this.element, this.data || obj, obj);
+			this.setData(obj);
 			this.isActive = true;
 			
 			this.update();
-			
 			return this.element;
 		}
 		else if(typeof obj == 'function')
 		{
 			this.datafn = obj;
-			this.update();
+			
+			return this.element;
 		}
 		
 		if(this.isActive)
-			return this.callData();
+			return this.getData();
 		else
 			return false;
 	},
 	
-	callData: function()
+	getData: function()
 	{
-		return this.datafn.call(this.element, this.data);
+		this.data = this.datafn.call(this.element, this.data);
+		
+		return this.data;
+	},
+	
+	setData: function(obj)
+	{
+		var data;
+		if($.Chain.jobject(obj) && obj.item())
+			data = $.extend({}, obj.item());
+		else if($.Chain.jobject(obj))
+			data = {}
+		else
+			data = obj;
+		
+		this.data = this.datafn.call(this.element, this.data || data, data);
+		if(this.linkElement && this.linkElement[0] != obj[0])
+		{
+			var el = this.linkFunction();
+			if($.Chain.jobject(el) && el.length && el.item())
+				el.item(this.data);
+		}
 	},
 	
 	dataHandler: function(a, b)
 	{
-		if(b)
+		if(arguments.length == 2)
 			return $.extend(a, b);
 		else
 			return a;
@@ -71,7 +92,7 @@ $.Chain.service('item', {
 	
 	$update: function()
 	{
-		if(this.element.chain('active') && this.isActive && !this.isBuilt && this.callData())
+		if(this.element.chain('active') && this.isActive && !this.isBuilt && this.getData())
 			this.build();
 		
 		return this.element;
@@ -84,14 +105,14 @@ $.Chain.service('item', {
 		return this.element;
 	},
 	
-	$remove: function()
+	$remove: function(noupdate)
 	{
 		this.element.remove();
-		if(!$.Chain.jidentic(this.root, this.element))
+		if(!$.Chain.jidentic(this.root, this.element) && !noupdate)
 			this.root.update();
 		
 		if(this.$link)
-			this.$link(null, null);
+			this.$link(null);
 	},
 	
 	$active: function()
@@ -116,42 +137,45 @@ $.Chain.service('item', {
 	$backup: function()
 	{
 		this.isBuilt = false;
-	}
-});
-
-// Linking extension
-$.Chain.extend('item', {
-	$link: function(element, fn)
+	},
+	
+	$link: function(element, collection)
 	{
 		if(this.linkElement)
 		{
-			this.datafn = this.linkDataFn || this.dataHandler;
-			this.linkElement.unbind('update', this.linkFunction);
+			this.linkElement.unbind('update', this.linkUpdater);
+			this.linkElement = null;
 		}
 		
 		element = $(element);
-		if(element.length && typeof fn == 'function')
+		if(element.length)
 		{
 			var self = this;
-			
 			this.isActive = true;
 			this.linkElement = element;
-			this.linkDataFn = this.datafn;
-			
-			this.datafn = function()
-			{
-				try{return $.extend({}, fn.apply(self.element, [self.linkElement]));}catch(e){return {};};
-			};
 			this.linkFunction = function()
 			{
-				self.update();
+				if(typeof collection == 'function')
+					try{return collection.call(self.element, self.linkElement)}catch(e){return $().eq(-1)}
+				else if(typeof collection == 'string')
+					return self.linkElement.items('collection', collection);
+				else
+					return $().eq(-1);
 			};
 			
-			this.linkElement.bind('update', this.linkFunction);
+			this.linkUpdater = function()
+			{
+				var res = self.linkFunction();
+				if(res && res.length)
+					self.element.item(res);
+			};
+			
+			this.linkElement.bind('update', this.linkUpdater);
+			this.linkUpdater();
 		}
 		
 		return this.element;
 	}
 });
-	
+
 })(jQuery);

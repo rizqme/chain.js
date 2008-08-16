@@ -114,7 +114,12 @@ $.Chain.service('chain', {
 				for(var i in data)
 				{
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
-						self.find('.'+i).text(data[i]).val(data[i]).end();
+						self.find('.'+i)
+							.not(':input')
+							.text(data[i])
+							.end()
+							.filter(':input')
+							.val(data[i]);
 				}
 			});
 	},

@@ -347,7 +347,12 @@ $.Chain.service('chain', {
 				for(var i in data)
 				{
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
-						self.find('.'+i).text(data[i]).val(data[i]).end();
+						self.find('.'+i)
+							.not(':input')
+							.text(data[i])
+							.end()
+							.filter(':input')
+							.val(data[i]);
 				}
 			});
 	},
@@ -439,10 +444,34 @@ $.Chain.service('chain', {
 (function($){
 
 $.Chain.service('items', {
+	collections: 
+	{
+		all: function()
+		{
+			return this.element.chain('anchor').children('.chain-item');
+		},
+		
+		visible: function()
+		{
+			return this.element.chain('anchor').children('.chain-item:visible');
+		},
+		
+		hidden: function()
+		{
+			return this.element.chain('anchor').children('.chain-item:hidden');
+		},
+		
+		self: function()
+		{
+			return this.element;
+		}
+	},
+	
 	init: function()
 	{
 		this.isActive = false;
 		this.buffer = [];
+		this.collections = $.extend({}, this.collections);
 	},
 	
 	handler: function(obj)
@@ -457,23 +486,22 @@ $.Chain.service('items', {
 		else if(typeof obj == 'number')
 			return this.getByNumber(obj);
 		else if(obj === true)
-			return this.element.chain('anchor').children('.chain-item');
+			return this.collection('all');
 		else
-			return this.element.chain('anchor').children('.chain-item:visible');
+			return this.collection('visible');
 	},
 	
 	getByData: function(item)
 	{
-		return this.element.chain('anchor').children()
-			.filter(function(){return $(this).item() == item});
+		return this.collection('all').filter(function(){return $(this).item() == item});
 	},
 	
 	getByNumber: function(number)
 	{
 		if(number == -1)
-			return this.element.chain('anchor').children(':last');
+			return this.collection('visible').filter(':last');
 		else
-			return this.element.chain('anchor').children(':eq('+number+')');
+			return this.collection('visible').eq(number);
 	},
 	
 	update: function()
@@ -483,7 +511,26 @@ $.Chain.service('items', {
 	
 	empty: function()
 	{
-		this.element.chain('anchor').empty();
+		this.collection('all').each(function(){$(this).item('remove', true)});
+	},
+	
+	collection: function(col, fn)
+	{
+		if(arguments.length > 1)
+		{
+			if(typeof fn == 'function')
+				this.collections[col] = fn;
+			
+			return this.element;
+		}
+		else
+		{
+			if(this.collections[col])
+				return this.collections[col].apply(this);
+			else
+				return $().eq(-1);
+		}
+		
 	},
 	
 	$update: function()
@@ -496,13 +543,18 @@ $.Chain.service('items', {
 		var template = $(this.element.chain('template'));
 		
 		$.each(this.buffer, function(){
-			template
+			var clone = template
 				.clone()
 				.appendTo(self.element.chain('anchor'))
 				.addClass('chain-item')
-				.item('root', self.element)
-				.item(this)
-				.chain(builder);
+				.item('root', self.element);
+			
+			if(self.linkElement && $.Chain.jobject(this) && this.item())
+				clone.item('link', this, 'self');
+			else
+				clone.item(this);
+			
+			clone.chain(builder);
 		});
 		
 		this.buffer = [];
@@ -524,7 +576,7 @@ $.Chain.service('items', {
 		this.isActive = true;
 		
 		if($.Chain.jobject(items))
-			this.buffer = this.buffer.concat(items.map(function(){return $(this).item()}).get());
+			this.buffer = this.buffer.concat(items.map(function(){return $(this)}).get());
 		else if(items instanceof Array)
 			this.buffer = this.buffer.concat(items);
 		this.update();
@@ -538,7 +590,7 @@ $.Chain.service('items', {
 		this.empty();
 		
 		if($.Chain.jobject(items))
-			this.buffer = items.map(function(){return $(this).item()}).get();
+			this.buffer = items.map(function(){return $(this)}).get();
 		else if(items instanceof Array)
 			this.buffer = items;
 		
@@ -550,7 +602,7 @@ $.Chain.service('items', {
 	$remove: function()
 	{
 		for(var i=0; i<arguments.length; i++)
-			this.handler(arguments[i]).remove();
+			this.handler(arguments[i]).item('remove', true);
 		this.update();
 		
 		return this.element;
@@ -581,6 +633,46 @@ $.Chain.service('items', {
 		return this.handler(x).map(function(){return $(this).item();}).get();
 	},
 	
+	$link: function(element, collection)
+	{
+		if(this.linkElement)
+		{
+			this.linkElement.unbind('update', this.linkUpdater);
+			this.linkElement = null;
+		}
+		
+		element = $(element);
+		if(element.length)
+		{
+			var self = this;
+			this.linkElement = element;
+			this.linkFunction = function()
+			{
+				if(typeof collection == 'function')
+					try{return collection.call(self.element, self.linkElement)}catch(e){return $().eq(-1)}
+				else if(typeof collection == 'string')
+					return self.linkElement.items('collection', collection);
+				else
+					return $().eq(-1);
+			};
+			
+			this.linkUpdater = function()
+			{
+				self.element.items('replace', self.linkFunction());
+			};
+			
+			this.linkElement.bind('update', this.linkUpdater);
+			this.linkUpdater();
+		}
+		
+		return this.element;
+	},
+	
+	$collection: function()
+	{
+		return this.collection.apply(this, Array.prototype.slice.call(arguments));
+	},
+	
 	$active: function()
 	{
 		return this.isActive;
@@ -592,7 +684,7 @@ $.Chain.service('items', {
 			return;
 		
 		var buffer = [];
-		this.element.chain('anchor').children().each(function(){
+		this.collection('all').each(function(){
 			var item = $(this).item();
 			if(item)
 				buffer.push(item);
@@ -620,18 +712,23 @@ $.Chain.extend('items', {
 		
 		if(text)
 		{
+			if(typeof text == 'string')
+				text = text.toLowerCase();
+			
 			var items = this.element.items(true).filter(function(){
 				var data = $(this).item();
 				if(props)
 				{
 					for(var i=0; i<props.length; i++)
-						if(typeof data[i] == 'string' && !!data[i].match(text))
+						if(typeof data[i] == 'string'
+							&& !!(typeof text == 'string' ? data[i].toLowerCase() : data[i]).match(text))
 							return true;
 				}
 				else
 				{
 					for(var i in data)
-						if(typeof data[i] == 'string' && !!data[i].match(text))
+						if(typeof data[i] == 'string'
+							&& !!(typeof text == 'string' ? data[i].toLowerCase() : data[i]).match(text))
 							return true;
 				}
 			});
@@ -648,7 +745,7 @@ $.Chain.extend('items', {
 	
 	$filter: function(text, properties)
 	{
-		if(!text && text !== null && text !== false)
+		if(arguments.length == 0)
 			return this.update();
 		
 		this.searchText = text;
@@ -715,8 +812,12 @@ $.Chain.extend('items', {
 		if(!name && name !== null && name !== false)
 			return this.update();
 		
+		if(this.sortName != name)
+			this.sortOpt = $.extend({desc:false, type:'default', toggle:false}, opt);
+		else
+			$.extend(this.sortOpt, opt);
+		
 		this.sortName = name;
-		this.sortOpt = $.extend({desc:false, type:'default', toggle:false}, opt);
 		
 		if(!this.sortBinding)
 		{
@@ -726,31 +827,6 @@ $.Chain.extend('items', {
 		}
 		
 		return this.update();
-	}
-});
-
-// Linking extension
-$.Chain.extend('items', {
-	$link: function(element, fn)
-	{
-		if(this.linkElement)
-			this.linkElement.unbind('update', this.linkFunction);
-		
-		element = $(element);
-		if(element.length && typeof fn == 'function')
-		{
-			var self = this;
-			this.linkElement = element;
-			this.linkFunction = function()
-			{
-				try{self.$replace(fn.apply(self.element, [self.linkElement]));}catch(e){self.$empty()}
-			};
-			
-			this.linkElement.bind('update', this.linkFunction);
-			this.linkFunction();
-		}
-		
-		return this.element;
 	}
 });
 	
@@ -774,33 +850,54 @@ $.Chain.service('item', {
 	{
 		if(typeof obj == 'object')
 		{
-			this.data = this.datafn.call(this.element, this.data || obj, obj);
+			this.setData(obj);
 			this.isActive = true;
 			
 			this.update();
-			
 			return this.element;
 		}
 		else if(typeof obj == 'function')
 		{
 			this.datafn = obj;
-			this.update();
+			
+			return this.element;
 		}
 		
 		if(this.isActive)
-			return this.callData();
+			return this.getData();
 		else
 			return false;
 	},
 	
-	callData: function()
+	getData: function()
 	{
-		return this.datafn.call(this.element, this.data);
+		this.data = this.datafn.call(this.element, this.data);
+		
+		return this.data;
+	},
+	
+	setData: function(obj)
+	{
+		var data;
+		if($.Chain.jobject(obj) && obj.item())
+			data = $.extend({}, obj.item());
+		else if($.Chain.jobject(obj))
+			data = {}
+		else
+			data = obj;
+		
+		this.data = this.datafn.call(this.element, this.data || data, data);
+		if(this.linkElement && this.linkElement[0] != obj[0])
+		{
+			var el = this.linkFunction();
+			if($.Chain.jobject(el) && el.length && el.item())
+				el.item(this.data);
+		}
 	},
 	
 	dataHandler: function(a, b)
 	{
-		if(b)
+		if(arguments.length == 2)
 			return $.extend(a, b);
 		else
 			return a;
@@ -831,7 +928,7 @@ $.Chain.service('item', {
 	
 	$update: function()
 	{
-		if(this.element.chain('active') && this.isActive && !this.isBuilt && this.callData())
+		if(this.element.chain('active') && this.isActive && !this.isBuilt && this.getData())
 			this.build();
 		
 		return this.element;
@@ -844,14 +941,14 @@ $.Chain.service('item', {
 		return this.element;
 	},
 	
-	$remove: function()
+	$remove: function(noupdate)
 	{
 		this.element.remove();
-		if(!$.Chain.jidentic(this.root, this.element))
+		if(!$.Chain.jidentic(this.root, this.element) && !noupdate)
 			this.root.update();
 		
 		if(this.$link)
-			this.$link(null, null);
+			this.$link(null);
 	},
 	
 	$active: function()
@@ -876,43 +973,46 @@ $.Chain.service('item', {
 	$backup: function()
 	{
 		this.isBuilt = false;
-	}
-});
-
-// Linking extension
-$.Chain.extend('item', {
-	$link: function(element, fn)
+	},
+	
+	$link: function(element, collection)
 	{
 		if(this.linkElement)
 		{
-			this.datafn = this.linkDataFn || this.dataHandler;
-			this.linkElement.unbind('update', this.linkFunction);
+			this.linkElement.unbind('update', this.linkUpdater);
+			this.linkElement = null;
 		}
 		
 		element = $(element);
-		if(element.length && typeof fn == 'function')
+		if(element.length)
 		{
 			var self = this;
-			
 			this.isActive = true;
 			this.linkElement = element;
-			this.linkDataFn = this.datafn;
-			
-			this.datafn = function()
-			{
-				try{return $.extend({}, fn.apply(self.element, [self.linkElement]));}catch(e){return {};};
-			};
 			this.linkFunction = function()
 			{
-				self.update();
+				if(typeof collection == 'function')
+					try{return collection.call(self.element, self.linkElement)}catch(e){return $().eq(-1)}
+				else if(typeof collection == 'string')
+					return self.linkElement.items('collection', collection);
+				else
+					return $().eq(-1);
 			};
 			
-			this.linkElement.bind('update', this.linkFunction);
+			this.linkUpdater = function()
+			{
+				var res = self.linkFunction();
+				if(res && res.length)
+					self.element.item(res);
+			};
+			
+			this.linkElement.bind('update', this.linkUpdater);
+			this.linkUpdater();
 		}
 		
 		return this.element;
 	}
 });
-	
+
 })(jQuery);
 
