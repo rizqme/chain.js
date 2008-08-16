@@ -513,7 +513,12 @@ $.Chain.service('items', {
 	
 	empty: function()
 	{
-		this.collection('all').each(function(){$(this).item('remove', true)});
+		var all = this.collection('all');
+		
+		// Make it run in the background. for responsiveness.
+		setTimeout(function(){all.each(function(){$(this).item('remove', true)});}, 1);
+		
+		this.element.chain('anchor').empty();
 	},
 	
 	collection: function(col, fn)
