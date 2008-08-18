@@ -1,0 +1,67 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Demo: Fill Up with Data</title>
+		<script src="../lib/jquery-1.2.6.pack.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../build/chain.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		 <div style="color:#444;background:#DCE9F4;border:1px solid #BBB; padding: 0.5em;" id="contact">
+			<div class="name">My Name</div>
+			<div class="company">My Company</div>
+			<div class="phone">000-000-0000</div>
+			<a class="url" href="http://myurl.com/">http://myurl.com/</a>
+		</div>
+		
+		<div style="margin-top: 1em;color:#444;background:#DCE9F4;border:1px solid #BBB; padding: 0.5em;" id="contact">
+			<input type="button" value="link" onclick="link()"> Click and try to edit the fields.
+		</div>
+		
+		 <div style="margin-top: 1em;color:#444;background:#DCE9F4;border:1px solid #BBB;" id="edit">
+			<div style="margin: 0.5em;"><input type="text" value="My Name" class="name" /></div>
+			<div style="margin: 0.5em;"><input type="text" value="My Company" class="company" /></div>
+			<div style="margin: 0.5em;"><input type="text" value="000-000-0000" class="phone" /></div>
+			<div style="margin: 0.5em;"><input type="text" value="http://myurl.com/" class="url" /></div>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			$('#contact')
+				.item({
+					name: "John Doe",
+					company: "The Example Company",
+					phone: "604-555-1234",
+					url: "http://example.com/"
+				})
+				.chain({
+					'.name': '{name}',
+					'.company': '{company}',
+					'.phone': '{phone}',
+					'.url': {href:'{url}', content:'{url}'}
+				});
+			
+			function link()
+			{
+				$('#edit')
+					.item('link', '#contact', 'self')
+					.chain(function(){
+						var self = this;
+						
+						// Update item on keypress
+						this.find(':input').keydown(function(){
+							// You can avoid using setTimeout if
+							// You use keyup instead
+							setTimeout(function(){
+								self.item({
+									name: self.find('.name').val(),
+									company: self.find('.company').val(),
+									phone: self.find('.phone').val(),
+									url: self.find('.url').val()
+								})
+							})
+						})
+					});
+			}
+		</script>
+	</body>
+</html>

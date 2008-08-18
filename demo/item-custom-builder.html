@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Demo: Fill Up with Data</title>
+		<script src="../lib/jquery-1.2.6.pack.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../build/chain.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		 <div style="color:#444;background:#DCE9F4;border:1px solid #BBB; padding: 0.5em;" id="contact">
+			<div class="name">My Name</div>
+			<div class="address">My Address</div>
+			<div class="country">Unknown Country</div>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			$('#contact')
+				.item({
+					name: "Rizqi Ahmad",
+					address: "Somestrasse 50, Hamburg",
+					country: "Germany"
+				})
+				.chain({
+					'.name': 'Hello, My Name is {name}',
+					'.address': 'My address is {address}',
+					'.country': 'It is in {country}'
+				});
+		</script>
+	</body>
+</html>

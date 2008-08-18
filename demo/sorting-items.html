@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+		<title>Demo: Fill Up with Data</title>
+		<script src="../lib/jquery-1.2.6.pack.js" type="text/javascript" charset="utf-8"></script>
+		<script src="../build/chain.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<div style="margin-top:0.5em; border:1px solid #BBB;">
+			<input style="margin: 0.5em;" type="button" value="SortFirst" onclick="sortFirst();" />
+			<input style="margin: 0.5em;" type="button" value="SortLast" onclick="sortLast();" />
+		</div>
+		 <div style="color:#444;border:1px solid #BBB;" id="persons">
+			<div style="background:#DCE9F4;padding: 0.3em;margin:1px;" class="item"><span class="first">First</span> <span class="last">Last</span></div>
+		</div>
+		<script type="text/javascript" charset="utf-8">
+			$('#persons')
+				.items([
+					{first:'Isaac', last:'Newton'},
+					{first:'Johannes', last:'Keppler'},
+					{first:'Alessandro', last:'Volta'},
+					{first:'Blaise', last:'Pascal'},
+					{first:'Niels', last:'Bohr'},
+					{first:'Albert', last:'Einstein'},
+					{first:'Stephen', last:'Hawking'}
+				])
+				.chain();
+			
+			function sortFirst()
+			{
+				$('#persons').items('sort', 'first', {toggle:true});
+			}
+			function sortLast()
+			{
+				$('#persons').items('sort', 'last', {toggle:true});
+			}
+		</script>
+	</body>
+</html>
