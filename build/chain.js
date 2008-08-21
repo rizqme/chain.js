@@ -351,7 +351,7 @@ $.Chain.service('chain', {
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
 						self.find('.'+i)
 							.not(':input')
-							.text(data[i])
+							.html(data[i])
 							.end()
 							.filter(':input')
 							.val(data[i]);
