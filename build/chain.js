@@ -299,7 +299,7 @@ $.Chain.service('chain', {
 			
 				if (typeof rules[i] == 'function')
 				{
-					val = rules[i].apply(self, [data]);
+					val = rules[i].apply(self, [data, el]);
 					if(typeof val == 'string')
 						el.not(':input').html(val).end().filter(':input').val(val);
 				}
@@ -309,7 +309,7 @@ $.Chain.service('chain', {
 					{
 						if (typeof rules[i][j] == 'function')
 						{
-							val = rules[i][j].apply(self, [data]);
+							val = rules[i][j].apply(self, [data, el]);
 							if(typeof val == 'string')
 							{
 								if(j == 'content')
