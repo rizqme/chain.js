@@ -102,7 +102,7 @@ $.Chain.service('items', {
 		
 		var self = this;
 		var builder = this.element.chain('builder');
-		var template = $(this.element.chain('template'));
+		var template = $(this.element.chain('template')).eq(0);
 		
 		$.each(this.buffer, function(){
 			var clone = template
