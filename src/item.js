@@ -74,7 +74,7 @@ $.Chain.service('item', {
 	
 	build: function()
 	{
-		this.element.chain('anchor').html(this.element.chain('template'));
+		this.element.chain('anchor').html(this.element.chain('template', 'raw'));
 		
 		if(!$.Chain.jidentic(this.root, this.element))
 		{

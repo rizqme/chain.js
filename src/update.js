@@ -1,12 +1,12 @@
 (function($){
 
 $.Chain.service('update', {
-	handler: function(obj)
+	handler: function(opt)
 	{
-		if(typeof obj == 'function')
-			return this.bind(obj);
+		if(typeof opt == 'function')
+			return this.bind(opt);
 		else
-			return this.trigger();
+			return this.trigger(opt);
 	},
 	
 	bind: function(fn)
@@ -14,12 +14,16 @@ $.Chain.service('update', {
 		return this.element.bind('update', fn);
 	},
 	
-	trigger: function()
+	trigger: function(opt)
 	{
 		this.element.items('update');
 		this.element.item('update');
 		
 		this.element.triggerHandler('preupdate', this.element.item());
+		
+		if(opt == 'hard')
+			this.element.items(true).each(function(){$(this).update();});
+		
 		this.element.triggerHandler('update', this.element.item());
 		
 		return this.element;

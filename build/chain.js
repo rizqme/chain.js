@@ -29,7 +29,7 @@ THE SOFTWARE.
 	
 $.Chain = 
 {
-	version: '0.1',
+	version: '0.1.9a',
 	
 	tag: ['{', '}'],
 	
@@ -182,7 +182,7 @@ $.Chain =
 			// Exception handler is handling errors in parsing
 			// so, it won't make the whole program crash.
 			try{
-				fn = new Function('$data', closure[0]+result.join('\n')+closure[1]);
+				fn = new Function('$data, $el', closure[0]+result.join('\n')+closure[1]);
 			}catch(e){
 				throw 'error in parsing rules';
 				fn = function(){};
@@ -202,12 +202,12 @@ $.Chain =
 (function($){
 
 $.Chain.service('update', {
-	handler: function(obj)
+	handler: function(opt)
 	{
-		if(typeof obj == 'function')
-			return this.bind(obj);
+		if(typeof opt == 'function')
+			return this.bind(opt);
 		else
-			return this.trigger();
+			return this.trigger(opt);
 	},
 	
 	bind: function(fn)
@@ -215,12 +215,16 @@ $.Chain.service('update', {
 		return this.element.bind('update', fn);
 	},
 	
-	trigger: function()
+	trigger: function(opt)
 	{
 		this.element.items('update');
 		this.element.item('update');
 		
 		this.element.triggerHandler('preupdate', this.element.item());
+		
+		if(opt == 'hard')
+			this.element.items(true).each(function(){$(this).update();});
+		
 		this.element.triggerHandler('update', this.element.item());
 		
 		return this.element;
@@ -238,6 +242,7 @@ $.Chain.service('chain', {
 	{
 		this.anchor = this.element;
 		this.template = this.anchor.html();
+		this.tplNumber = 0;
 		this.builder = this.createBuilder();
 		this.plugins = {};
 		this.isActive = false;
@@ -272,6 +277,9 @@ $.Chain.service('chain', {
 		
 		this.setAnchor(rules.anchor);
 		delete rules.anchor;
+		
+		var override = rules.override;
+		delete rules.override;
 	
 		for(var i in rules)
 		{
@@ -329,12 +337,18 @@ $.Chain.service('chain', {
 				}
 			}
 		};
+		
+		var defBuilder = this.defaultBuilder;
 	
 		this.builder = function(root)
 		{
 			if(builder)
 				builder.apply(this, [root]);
-			$(this).update(fn);
+			
+			if(!override)
+				defBuilder.apply(this);
+			
+			this.update(fn);
 		};
 	},
 	
@@ -344,17 +358,17 @@ $.Chain.service('chain', {
 		var res = builder ? (builder.apply(this, [root]) !== false) : true;
 		
 		if(res)
-			$(this).update(function(event, data){
+			this.update(function(event, data){
 				var self = $(this);
 				for(var i in data)
 				{
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
 						self.find('.'+i)
-							.not(':input')
-							.html(data[i])
+							.filter(':input').val(data[i])
 							.end()
-							.filter(':input')
-							.val(data[i]);
+							.filter('img').attr('src', data[i])
+							.end()
+							.not(':input').html(data[i]);
 				}
 			});
 	},
@@ -368,7 +382,7 @@ $.Chain.service('chain', {
 	setAnchor: function(anchor)
 	{
 		this.anchor.html(this.template);
-		this.anchor = $(anchor || this.anchor);
+		this.anchor = anchor == this.element ? anchor : this.element.find(anchor);
 		this.template = this.anchor.html();
 		this.anchor.empty();
 	},
@@ -391,9 +405,34 @@ $.Chain.service('chain', {
 		}
 	},
 	
-	$template: function()
+	$template: function(arg)
 	{
-		return this.template;
+		if(!arguments.length)
+			return $('<div>').html(this.template).children().eq(this.tplNumber);
+		
+		if(arg == 'raw')
+			return this.template;
+		
+		if(typeof arg == 'number')
+		{
+			this.tplNumber = arg;
+		}
+		else
+		{
+			var tpl = $('<div>').html(this.template).children();
+			var node = tpl.filter(arg).eq(0);
+			
+			if(node.length)
+				this.tplNumber = tpl.index(node);
+			else
+				return this.element;
+		}
+		
+		this.element.items('backup');
+		this.element.item('backup');
+		this.element.update();
+		
+		return this.element;
 	},
 	
 	$builder: function(builder)
@@ -472,7 +511,8 @@ $.Chain.service('items', {
 	init: function()
 	{
 		this.isActive = false;
-		this.buffer = [];
+		this.pushBuffer = [];
+		this.shiftBuffer = [];
 		this.collections = $.extend({}, this.collections);
 	},
 	
@@ -480,9 +520,11 @@ $.Chain.service('items', {
 	{
 		if(obj instanceof Array)
 			return this.$merge(obj);
+		else if(!this.isActive)
+			return $().eq(-1);
 		else if($.Chain.jobject(obj))
 			return (!$.Chain.jidentic(obj, obj.item('root')) && $.Chain.jidentic(this.element, obj.item('root')))
-				? obj : $().eq(1);
+				? obj : $().eq(-1);
 		else if(typeof obj == 'object')
 			return this.getByData(obj);
 		else if(typeof obj == 'number')
@@ -547,12 +589,12 @@ $.Chain.service('items', {
 		
 		var self = this;
 		var builder = this.element.chain('builder');
-		var template = $(this.element.chain('template')).eq(0);
+		var template = this.element.chain('template');
+		var push;
 		
-		$.each(this.buffer, function(){
+		var iterator = function(){
 			var clone = template
-				.clone()
-				.appendTo(self.element.chain('anchor'))
+				.clone()[push ? 'appendTo' :'prependTo'](self.element.chain('anchor'))
 				.addClass('chain-item')
 				.item('root', self.element);
 			
@@ -562,20 +604,41 @@ $.Chain.service('items', {
 				clone.item(this);
 			
 			clone.chain(builder);
-		});
+		};
 		
-		this.buffer = [];
+		push = false;
+		$.each(this.shiftBuffer, iterator);
+		push = true;
+		$.each(this.pushBuffer, iterator);
+		
+		
+		this.shiftBuffer = [];
+		this.pushBuffer = [];
+		
+		return this.element;
+	},
+	
+	$push: function()
+	{
+		this.isActive = true;
+		this.pushBuffer = this.pushBuffer.concat(Array.prototype.slice.call(arguments));
+		this.update();
+		
+		return this.element;
+	},
+	
+	$shift: function()
+	{
+		this.isActive = true;
+		this.shiftBuffer = this.shiftBuffer.concat(Array.prototype.slice.call(arguments));
+		this.update();
 		
 		return this.element;
 	},
 	
 	$add: function()
 	{
-		this.isActive = true;
-		this.buffer = this.buffer.concat(Array.prototype.slice.call(arguments));
-		this.update();
-		
-		return this.element;
+		return this.$push.apply(this, Array.prototype.slice.call(arguments));
 	},
 	
 	$merge: function(items)
@@ -583,9 +646,9 @@ $.Chain.service('items', {
 		this.isActive = true;
 		
 		if($.Chain.jobject(items))
-			this.buffer = this.buffer.concat(items.map(function(){return $(this)}).get());
+			this.pushBuffer = this.pushBuffer.concat(items.map(function(){return $(this)}).get());
 		else if(items instanceof Array)
-			this.buffer = this.buffer.concat(items);
+			this.pushBuffer = this.pushBuffer.concat(items);
 		this.update();
 		
 		return this.element;
@@ -597,9 +660,9 @@ $.Chain.service('items', {
 		this.empty();
 		
 		if($.Chain.jobject(items))
-			this.buffer = items.map(function(){return $(this)}).get();
+			this.pushBuffer = items.map(function(){return $(this)}).get();
 		else if(items instanceof Array)
-			this.buffer = items;
+			this.pushBuffer = items;
 		
 		this.update();
 		
@@ -629,7 +692,8 @@ $.Chain.service('items', {
 	$empty: function()
 	{
 		this.empty();
-		this.buffer = [];
+		this.shiftBuffer = [];
+		this.pushBuffer = [];
 		this.update();
 		
 		return this.element;
@@ -675,6 +739,11 @@ $.Chain.service('items', {
 		return this.element;
 	},
 	
+	$index: function(item)
+	{
+		return this.collection('all').index(this.handler(item));
+	},
+	
 	$collection: function()
 	{
 		return this.collection.apply(this, Array.prototype.slice.call(arguments));
@@ -696,7 +765,8 @@ $.Chain.service('items', {
 			if(item)
 				buffer.push(item);
 		});
-		this.buffer = buffer.concat(this.buffer);
+		
+		this.pushBuffer = buffer.concat(this.pushBuffer);
 		
 		this.empty();
 		
@@ -917,7 +987,7 @@ $.Chain.service('item', {
 	
 	build: function()
 	{
-		this.element.chain('anchor').html(this.element.chain('template'));
+		this.element.chain('anchor').html(this.element.chain('template', 'raw'));
 		
 		if(!$.Chain.jidentic(this.root, this.element))
 		{

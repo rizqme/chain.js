@@ -2,7 +2,7 @@
 	
 $.Chain = 
 {
-	version: '0.1',
+	version: '0.1.9a',
 	
 	tag: ['{', '}'],
 	
@@ -155,7 +155,7 @@ $.Chain =
 			// Exception handler is handling errors in parsing
 			// so, it won't make the whole program crash.
 			try{
-				fn = new Function('$data', closure[0]+result.join('\n')+closure[1]);
+				fn = new Function('$data, $el', closure[0]+result.join('\n')+closure[1]);
 			}catch(e){
 				throw 'error in parsing rules';
 				fn = function(){};

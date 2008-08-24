@@ -5,6 +5,7 @@ $.Chain.service('chain', {
 	{
 		this.anchor = this.element;
 		this.template = this.anchor.html();
+		this.tplNumber = 0;
 		this.builder = this.createBuilder();
 		this.plugins = {};
 		this.isActive = false;
@@ -39,6 +40,9 @@ $.Chain.service('chain', {
 		
 		this.setAnchor(rules.anchor);
 		delete rules.anchor;
+		
+		var override = rules.override;
+		delete rules.override;
 	
 		for(var i in rules)
 		{
@@ -96,12 +100,18 @@ $.Chain.service('chain', {
 				}
 			}
 		};
+		
+		var defBuilder = this.defaultBuilder;
 	
 		this.builder = function(root)
 		{
 			if(builder)
 				builder.apply(this, [root]);
-			$(this).update(fn);
+			
+			if(!override)
+				defBuilder.apply(this);
+			
+			this.update(fn);
 		};
 	},
 	
@@ -111,17 +121,17 @@ $.Chain.service('chain', {
 		var res = builder ? (builder.apply(this, [root]) !== false) : true;
 		
 		if(res)
-			$(this).update(function(event, data){
+			this.update(function(event, data){
 				var self = $(this);
 				for(var i in data)
 				{
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
 						self.find('.'+i)
-							.not(':input')
-							.html(data[i])
+							.filter(':input').val(data[i])
 							.end()
-							.filter(':input')
-							.val(data[i]);
+							.filter('img').attr('src', data[i])
+							.end()
+							.not(':input').html(data[i]);
 				}
 			});
 	},
@@ -135,7 +145,7 @@ $.Chain.service('chain', {
 	setAnchor: function(anchor)
 	{
 		this.anchor.html(this.template);
-		this.anchor = $(anchor || this.anchor);
+		this.anchor = anchor == this.element ? anchor : this.element.find(anchor);
 		this.template = this.anchor.html();
 		this.anchor.empty();
 	},
@@ -158,9 +168,34 @@ $.Chain.service('chain', {
 		}
 	},
 	
-	$template: function()
+	$template: function(arg)
 	{
-		return this.template;
+		if(!arguments.length)
+			return $('<div>').html(this.template).children().eq(this.tplNumber);
+		
+		if(arg == 'raw')
+			return this.template;
+		
+		if(typeof arg == 'number')
+		{
+			this.tplNumber = arg;
+		}
+		else
+		{
+			var tpl = $('<div>').html(this.template).children();
+			var node = tpl.filter(arg).eq(0);
+			
+			if(node.length)
+				this.tplNumber = tpl.index(node);
+			else
+				return this.element;
+		}
+		
+		this.element.items('backup');
+		this.element.item('backup');
+		this.element.update();
+		
+		return this.element;
 	},
 	
 	$builder: function(builder)

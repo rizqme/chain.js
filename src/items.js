@@ -27,7 +27,8 @@ $.Chain.service('items', {
 	init: function()
 	{
 		this.isActive = false;
-		this.buffer = [];
+		this.pushBuffer = [];
+		this.shiftBuffer = [];
 		this.collections = $.extend({}, this.collections);
 	},
 	
@@ -35,9 +36,11 @@ $.Chain.service('items', {
 	{
 		if(obj instanceof Array)
 			return this.$merge(obj);
+		else if(!this.isActive)
+			return $().eq(-1);
 		else if($.Chain.jobject(obj))
 			return (!$.Chain.jidentic(obj, obj.item('root')) && $.Chain.jidentic(this.element, obj.item('root')))
-				? obj : $().eq(1);
+				? obj : $().eq(-1);
 		else if(typeof obj == 'object')
 			return this.getByData(obj);
 		else if(typeof obj == 'number')
@@ -102,12 +105,12 @@ $.Chain.service('items', {
 		
 		var self = this;
 		var builder = this.element.chain('builder');
-		var template = $(this.element.chain('template')).eq(0);
+		var template = this.element.chain('template');
+		var push;
 		
-		$.each(this.buffer, function(){
+		var iterator = function(){
 			var clone = template
-				.clone()
-				.appendTo(self.element.chain('anchor'))
+				.clone()[push ? 'appendTo' :'prependTo'](self.element.chain('anchor'))
 				.addClass('chain-item')
 				.item('root', self.element);
 			
@@ -117,20 +120,41 @@ $.Chain.service('items', {
 				clone.item(this);
 			
 			clone.chain(builder);
-		});
+		};
 		
-		this.buffer = [];
+		push = false;
+		$.each(this.shiftBuffer, iterator);
+		push = true;
+		$.each(this.pushBuffer, iterator);
+		
+		
+		this.shiftBuffer = [];
+		this.pushBuffer = [];
+		
+		return this.element;
+	},
+	
+	$push: function()
+	{
+		this.isActive = true;
+		this.pushBuffer = this.pushBuffer.concat(Array.prototype.slice.call(arguments));
+		this.update();
+		
+		return this.element;
+	},
+	
+	$shift: function()
+	{
+		this.isActive = true;
+		this.shiftBuffer = this.shiftBuffer.concat(Array.prototype.slice.call(arguments));
+		this.update();
 		
 		return this.element;
 	},
 	
 	$add: function()
 	{
-		this.isActive = true;
-		this.buffer = this.buffer.concat(Array.prototype.slice.call(arguments));
-		this.update();
-		
-		return this.element;
+		return this.$push.apply(this, Array.prototype.slice.call(arguments));
 	},
 	
 	$merge: function(items)
@@ -138,9 +162,9 @@ $.Chain.service('items', {
 		this.isActive = true;
 		
 		if($.Chain.jobject(items))
-			this.buffer = this.buffer.concat(items.map(function(){return $(this)}).get());
+			this.pushBuffer = this.pushBuffer.concat(items.map(function(){return $(this)}).get());
 		else if(items instanceof Array)
-			this.buffer = this.buffer.concat(items);
+			this.pushBuffer = this.pushBuffer.concat(items);
 		this.update();
 		
 		return this.element;
@@ -152,9 +176,9 @@ $.Chain.service('items', {
 		this.empty();
 		
 		if($.Chain.jobject(items))
-			this.buffer = items.map(function(){return $(this)}).get();
+			this.pushBuffer = items.map(function(){return $(this)}).get();
 		else if(items instanceof Array)
-			this.buffer = items;
+			this.pushBuffer = items;
 		
 		this.update();
 		
@@ -184,7 +208,8 @@ $.Chain.service('items', {
 	$empty: function()
 	{
 		this.empty();
-		this.buffer = [];
+		this.shiftBuffer = [];
+		this.pushBuffer = [];
 		this.update();
 		
 		return this.element;
@@ -230,6 +255,11 @@ $.Chain.service('items', {
 		return this.element;
 	},
 	
+	$index: function(item)
+	{
+		return this.collection('all').index(this.handler(item));
+	},
+	
 	$collection: function()
 	{
 		return this.collection.apply(this, Array.prototype.slice.call(arguments));
@@ -251,7 +281,8 @@ $.Chain.service('items', {
 			if(item)
 				buffer.push(item);
 		});
-		this.buffer = buffer.concat(this.buffer);
+		
+		this.pushBuffer = buffer.concat(this.pushBuffer);
 		
 		this.empty();
 		
