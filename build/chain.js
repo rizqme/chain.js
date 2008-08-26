@@ -246,6 +246,8 @@ $.Chain.service('chain', {
 		this.builder = this.createBuilder();
 		this.plugins = {};
 		this.isActive = false;
+		
+		this.element.addClass('chain-element');
 	},
 	
 	handler: function(obj)
@@ -254,15 +256,12 @@ $.Chain.service('chain', {
 		this.element.item('backup');
 		
 		if(typeof obj == 'object')
-		{
 			this.build(obj);
-		}
 		else
-		{
 			if(typeof obj == 'function')
 				this.builder = this.createBuilder(obj);
-			this.anchor.empty();
-		}
+		
+		this.anchor.empty();
 		
 		this.isActive = true;
 		this.element.update();
@@ -366,12 +365,12 @@ $.Chain.service('chain', {
 				for(var i in data)
 				{
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
-						self.find('.'+i)
+						self.find('.'+i).not(self.find('.chain-element .'+i))
 							.filter(':input').val(data[i])
 							.end()
 							.filter('img').attr('src', data[i])
 							.end()
-							.not(':input').html(data[i]);
+							.not(':input, img').html(data[i]);
 				}
 			});
 	},
@@ -465,12 +464,19 @@ $.Chain.service('chain', {
 		else
 			return this.plugins;
 		
-		this.element.items('backup');
-		this.element.item('backup');
+		this.element.items(true).each(function(){
+			var self = $(this);
+			fn.call(self, self.item('root'));
+		});
 		
 		this.element.update();
 		
 		return this.element;
+	},
+	
+	$clone: function()
+	{
+		return this.element.clone().empty().attr('id', null).html(this.template);
 	},
 	
 	$destroy: function()
