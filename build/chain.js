@@ -275,7 +275,8 @@ $.Chain.service('chain', {
 		var builder = rules.builder;
 		delete rules.builder;
 		
-		this.setAnchor(rules.anchor);
+		if(rules.anchor)
+			this.setAnchor(rules.anchor);
 		delete rules.anchor;
 		
 		var override = rules.override;
@@ -349,6 +350,8 @@ $.Chain.service('chain', {
 				defBuilder.apply(this);
 			
 			this.update(fn);
+			
+			return false;
 		};
 	},
 	
@@ -376,7 +379,10 @@ $.Chain.service('chain', {
 	createBuilder: function(builder)
 	{
 		var defBuilder = this.defaultBuilder;
-		return function(root){defBuilder.apply(this, [builder, root])};
+		return function(root){
+			defBuilder.apply(this, [builder, root]);
+			return false;
+		};
 	},
 	
 	setAnchor: function(anchor)
