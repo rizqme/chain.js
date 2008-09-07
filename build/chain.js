@@ -99,19 +99,23 @@ $.Chain =
 	
 	parse: (function()
 	{
+		var $this = {};
 		// Function Closure
-		var closure =
+		$this.closure =
 		[
-			'var $text = [];\n'
+			'function($data, $el){'
+			+'var $text = [];\n'
 			+'$text.print = function(text)'
 			+'{this.push((typeof text == "number") ? text : ((typeof text != "undefined") ? text : ""));};\n'
 			+'with($data){\n',
 	
-			'}\nreturn $text.join("");'
+			'}\n'
+			+'return $text.join("");'
+			+'}'
 		];
 	
 		// Print text template
-		var textPrint = function(text)
+		$this.textPrint = function(text)
 		{
 			return '$text.print("'
 				+text.split('\\').join('\\\\').split("'").join("\\'").split('"').join('\\"')
@@ -119,30 +123,23 @@ $.Chain =
 		};
 	
 		// Print script template
-		var scriptPrint = function(text)
+		$this.scriptPrint = function(text)
 		{
 			return '$text.print('+text+');';
 		};
-	
-	
-		/*
-		 * Real function begins here.
-		 * We use closure for private variables and function.
-		 */
-		return function(text)
-		{
-			// Printing tag
-			var tag = $.Chain.tag;
-			
-			var opener, closer, closer2 = null, result = [];
 		
+		$this.parser = function(text){
+			var tag = $.Chain.tag;
+		
+			var opener, closer, closer2 = null, result = [];
+	
 			while(text){
-			
+		
 				// Check where the opener and closer tag
 				// are located in the text.
 				opener = text.indexOf(tag[0]);
 				closer = opener + text.substring(opener).indexOf(tag[1]);
-			
+		
 				// If opener tag exists, otherwise there are no tags anymore
 				if(opener != -1){
 					// Handle escape. Tag can be escaped with '\\'.
@@ -154,43 +151,51 @@ $.Chain =
 							closer2 = closer2-1;
 						else if(closer2 == opener+tag[0].length-1)
 							closer2 = text.length;
-					
-						result.push(textPrint(text.substring(0, opener-1)));
-						result.push(textPrint(text.substring(opener, closer2)));
+				
+						result.push($this.textPrint(text.substring(0, opener-1)));
+						result.push($this.textPrint(text.substring(opener, closer2)));
 					}
 					else{
 						closer2 = null;
 						if(closer == opener-1)
 							closer = text.length;
-					
-						result.push(textPrint(text.substring(0, opener)));
-						result.push(scriptPrint(text.substring(opener+tag[0].length, closer)));
+				
+						result.push($this.textPrint(text.substring(0, opener)));
+						result.push($this.scriptPrint(text.substring(opener+tag[0].length, closer)));
 					}
-						
+					
 					text = text.substring((closer2 == null) ? closer+tag[1].length : closer2);
 				}
 				// If there are still text, it will be pushed to array
 				// So we won't stuck in an infinite loop
 				else if(text){
-					result.push(textPrint(text));
+					result.push($this.textPrint(text));
 					text = '';
 				}
 			}
-		
-			var fn;
-			// The parsed text will be transformed to a function.
-			// Exception handler is handling errors in parsing
-			// so, it won't make the whole program crash.
-			try{
-				fn = new Function('$data, $el', closure[0]+result.join('\n')+closure[1]);
-			}catch(e){
-				throw 'error in parsing rules';
-				fn = function(){};
+	
+			return result.join('\n');	
+		}
+	
+	
+		/*
+		 * Real function begins here.
+		 * We use closure for private variables and function.
+		 */
+		return function($text)
+		{
+			var $fn;
+			try
+			{
+				eval('$fn = '+ $this.closure[0]+$this.parser($text)+$this.closure[1]);
 			}
-		
-			fn.parsed = true;
-		
-			return fn;
+			catch(e)
+			{
+				throw "Parsing Error";
+				$fn = function(){};
+			}
+			
+			return $fn;
 		};
 	})()
 };
@@ -246,6 +251,7 @@ $.Chain.service('chain', {
 		this.builder = this.createBuilder();
 		this.plugins = {};
 		this.isActive = false;
+		this.destroyers = [];
 		
 		this.element.addClass('chain-element');
 	},
@@ -363,15 +369,17 @@ $.Chain.service('chain', {
 			this.update(function(event, data){
 				var self = $(this);
 				for(var i in data)
-				{
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
-						self.find('.'+i).not(self.find('.chain-element .'+i))
-							.filter(':input').val(data[i])
-							.end()
-							.filter('img').attr('src', data[i])
-							.end()
-							.not(':input, img').html(data[i]);
-				}
+						self.find('> .'+i+', *:not(.chain-element) .'+i)
+							.each(function(){
+								var match = $(this);
+								if(match.filter(':input').length)
+									match.val(data[i]);
+								else if(match.filter('img').length)
+									match.src(data[i]);
+								else
+									match.html(data[i]);
+							});
 			});
 	},
 	
@@ -464,10 +472,11 @@ $.Chain.service('chain', {
 		else
 			return this.plugins;
 		
-		this.element.items(true).each(function(){
-			var self = $(this);
-			fn.call(self, self.item('root'));
-		});
+		if(typeof fn == 'function')
+			this.element.items(true).each(function(){
+				var self = $(this);
+				fn.call(self, self.item('root'));
+			});
 		
 		this.element.update();
 		
@@ -476,17 +485,36 @@ $.Chain.service('chain', {
 	
 	$clone: function()
 	{
-		return this.element.clone().empty().attr('id', null).html(this.template);
+		var id = this.element.attr('id');
+		this.element.attr('id', '');
+		
+		var clone = this.element.clone().empty().html(this.template);
+		this.element.attr('id', id);
+		
+		return clone;
 	},
 	
-	$destroy: function()
+	$destroy: function(nofollow)
 	{
-		this.element.items('backup');
-		this.element.item('backup');
+		this.element.removeClass('chain-element');
 		
+		if(!nofollow)
+		{
+			this.element.items('backup');
+			this.element.item('backup');
+			
+			this.element.find('.chain-element').each(function(){
+				$(this).chain('destroy', true);
+			});
+		}
+		
+		this.element.triggerHandler('destroy');
+	
 		this.isActive = false;
-		
+	
 		this.anchor.html(this.template);
+		
+		return this.element;
 	}
 });
 	
@@ -650,31 +678,48 @@ $.Chain.service('items', {
 	
 	$add: function()
 	{
-		return this.$push.apply(this, Array.prototype.slice.call(arguments));
-	},
-	
-	$merge: function(items)
-	{
-		this.isActive = true;
+		var cmd;
+		var args = Array.prototype.slice.call(arguments);
+		if(typeof args[0] == 'string')
+			cmd = args.shift();
+		var buffer = (cmd == 'shift') ? 'shiftBuffer' : 'pushBuffer';
 		
-		if($.Chain.jobject(items))
-			this.pushBuffer = this.pushBuffer.concat(items.map(function(){return $(this)}).get());
-		else if(items instanceof Array)
-			this.pushBuffer = this.pushBuffer.concat(items);
+		this.isActive = true;
+		this[buffer] = this[buffer].concat(args);
 		this.update();
 		
 		return this.element;
 	},
 	
-	$replace: function(items)
+	$merge: function(cmd, items)
 	{
+		if(typeof cmd != 'string')
+			items = cmd;
+		var buffer = (cmd == 'shift') ? 'shiftBuffer' : 'pushBuffer';
+		
+		this.isActive = true;
+		if($.Chain.jobject(items))
+			this[buffer] = this[buffer].concat(items.map(function(){return $(this)}).get());
+		else if(items instanceof Array)
+			this[buffer] = this[buffer].concat(items);
+		this.update();
+		
+		return this.element;
+	},
+	
+	$replace: function(cmd, items)
+	{
+		if(typeof cmd != 'string')
+			items = cmd;
+		var buffer = (cmd == 'shift') ? 'shiftBuffer' : 'pushBuffer';
+		
 		this.isActive = true;
 		this.empty();
 		
 		if($.Chain.jobject(items))
-			this.pushBuffer = items.map(function(){return $(this)}).get();
+			this[buffer] = items.map(function(){return $(this)}).get();
 		else if(items instanceof Array)
-			this.pushBuffer = items;
+			this[buffer] = items;
 		
 		this.update();
 		
@@ -999,7 +1044,9 @@ $.Chain.service('item', {
 	
 	build: function()
 	{
-		this.element.chain('anchor').html(this.element.chain('template', 'raw'));
+		// IE Fix
+		var fix = this.element.chain('template', 'raw').replace(/jQuery\d+\=\"null\"/gi, "");
+		this.element.chain('anchor').html(fix);
 		
 		if(!$.Chain.jidentic(this.root, this.element))
 		{
@@ -1025,14 +1072,18 @@ $.Chain.service('item', {
 	
 	$replace: function(obj)
 	{
-		this.data = obj;
+		this.data = {};
+		this.setData(obj);
 		this.isActive = true;
+		this.update();
 		return this.element;
 	},
 	
 	$remove: function(noupdate)
 	{
+		this.element.chain('destroy');
 		this.element.remove();
+		
 		if(!$.Chain.jidentic(this.root, this.element) && !noupdate)
 			this.root.update();
 		

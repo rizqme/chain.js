@@ -9,6 +9,7 @@ $.Chain.service('chain', {
 		this.builder = this.createBuilder();
 		this.plugins = {};
 		this.isActive = false;
+		this.destroyers = [];
 		
 		this.element.addClass('chain-element');
 	},
@@ -48,7 +49,7 @@ $.Chain.service('chain', {
 		{
 			if(typeof rules[i] == 'string')
 			{
-				rules[i] = $.Chain.parse(rules[i]);
+				eval$.Chain.parse(rules[i]);
 			}
 			else if(typeof rules[i] == 'object')
 			{
@@ -126,15 +127,17 @@ $.Chain.service('chain', {
 			this.update(function(event, data){
 				var self = $(this);
 				for(var i in data)
-				{
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
-						self.find('.'+i).not(self.find('.chain-element .'+i))
-							.filter(':input').val(data[i])
-							.end()
-							.filter('img').attr('src', data[i])
-							.end()
-							.not(':input, img').html(data[i]);
-				}
+						self.find('> .'+i+', *:not(.chain-element) .'+i)
+							.each(function(){
+								var match = $(this);
+								if(match.filter(':input').length)
+									match.val(data[i]);
+								else if(match.filter('img').length)
+									match.attr('src', data[i]);
+								else
+									match.html(data[i]);
+							});
 			});
 	},
 	
@@ -227,10 +230,11 @@ $.Chain.service('chain', {
 		else
 			return this.plugins;
 		
-		this.element.items(true).each(function(){
-			var self = $(this);
-			fn.call(self, self.item('root'));
-		});
+		if(typeof fn == 'function')
+			this.element.items(true).each(function(){
+				var self = $(this);
+				fn.call(self, self.item('root'));
+			});
 		
 		this.element.update();
 		
@@ -239,17 +243,36 @@ $.Chain.service('chain', {
 	
 	$clone: function()
 	{
-		return this.element.clone().empty().attr('id', null).html(this.template);
+		var id = this.element.attr('id');
+		this.element.attr('id', '');
+		
+		var clone = this.element.clone().empty().html(this.template);
+		this.element.attr('id', id);
+		
+		return clone;
 	},
 	
-	$destroy: function()
+	$destroy: function(nofollow)
 	{
-		this.element.items('backup');
-		this.element.item('backup');
+		this.element.removeClass('chain-element');
 		
+		if(!nofollow)
+		{
+			this.element.items('backup');
+			this.element.item('backup');
+			
+			this.element.find('.chain-element').each(function(){
+				$(this).chain('destroy', true);
+			});
+		}
+		
+		this.element.triggerHandler('destroy');
+	
 		this.isActive = false;
-		
+	
 		this.anchor.html(this.template);
+		
+		return this.element;
 	}
 });
 	

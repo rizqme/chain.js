@@ -74,7 +74,9 @@ $.Chain.service('item', {
 	
 	build: function()
 	{
-		this.element.chain('anchor').html(this.element.chain('template', 'raw'));
+		// IE Fix
+		var fix = this.element.chain('template', 'raw').replace(/jQuery\d+\=\"null\"/gi, "");
+		this.element.chain('anchor').html(fix);
 		
 		if(!$.Chain.jidentic(this.root, this.element))
 		{
@@ -100,14 +102,18 @@ $.Chain.service('item', {
 	
 	$replace: function(obj)
 	{
-		this.data = obj;
+		this.data = {};
+		this.setData(obj);
 		this.isActive = true;
+		this.update();
 		return this.element;
 	},
 	
 	$remove: function(noupdate)
 	{
+		this.element.chain('destroy');
 		this.element.remove();
+		
 		if(!$.Chain.jidentic(this.root, this.element) && !noupdate)
 			this.root.update();
 		

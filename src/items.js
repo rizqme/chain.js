@@ -154,31 +154,48 @@ $.Chain.service('items', {
 	
 	$add: function()
 	{
-		return this.$push.apply(this, Array.prototype.slice.call(arguments));
-	},
-	
-	$merge: function(items)
-	{
-		this.isActive = true;
+		var cmd;
+		var args = Array.prototype.slice.call(arguments);
+		if(typeof args[0] == 'string')
+			cmd = args.shift();
+		var buffer = (cmd == 'shift') ? 'shiftBuffer' : 'pushBuffer';
 		
-		if($.Chain.jobject(items))
-			this.pushBuffer = this.pushBuffer.concat(items.map(function(){return $(this)}).get());
-		else if(items instanceof Array)
-			this.pushBuffer = this.pushBuffer.concat(items);
+		this.isActive = true;
+		this[buffer] = this[buffer].concat(args);
 		this.update();
 		
 		return this.element;
 	},
 	
-	$replace: function(items)
+	$merge: function(cmd, items)
 	{
+		if(typeof cmd != 'string')
+			items = cmd;
+		var buffer = (cmd == 'shift') ? 'shiftBuffer' : 'pushBuffer';
+		
+		this.isActive = true;
+		if($.Chain.jobject(items))
+			this[buffer] = this[buffer].concat(items.map(function(){return $(this)}).get());
+		else if(items instanceof Array)
+			this[buffer] = this[buffer].concat(items);
+		this.update();
+		
+		return this.element;
+	},
+	
+	$replace: function(cmd, items)
+	{
+		if(typeof cmd != 'string')
+			items = cmd;
+		var buffer = (cmd == 'shift') ? 'shiftBuffer' : 'pushBuffer';
+		
 		this.isActive = true;
 		this.empty();
 		
 		if($.Chain.jobject(items))
-			this.pushBuffer = items.map(function(){return $(this)}).get();
+			this[buffer] = items.map(function(){return $(this)}).get();
 		else if(items instanceof Array)
-			this.pushBuffer = items;
+			this[buffer] = items;
 		
 		this.update();
 		
