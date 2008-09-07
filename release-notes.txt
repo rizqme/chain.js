@@ -4,7 +4,7 @@ v0.2:
 - added update('hard'), updating all items.
 - added mulitple templating. See Documentation
 - added items('index')
-- added items('push') and items('shift')
+- added items('add', 'push') and items('add', 'shift')
 - now chain({...}) only extend defaultBuilder, override using
   chain({override:true})
 - bug fixes
