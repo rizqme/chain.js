@@ -291,7 +291,7 @@ $.Chain.service('chain', {
 		{
 			if(typeof rules[i] == 'string')
 			{
-				rules[i] = $.Chain.parse(rules[i]);
+				eval$.Chain.parse(rules[i]);
 			}
 			else if(typeof rules[i] == 'object')
 			{
@@ -376,7 +376,7 @@ $.Chain.service('chain', {
 								if(match.filter(':input').length)
 									match.val(data[i]);
 								else if(match.filter('img').length)
-									match.src(data[i]);
+									match.attr('src', data[i]);
 								else
 									match.html(data[i]);
 							});
