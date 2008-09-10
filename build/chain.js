@@ -291,7 +291,7 @@ $.Chain.service('chain', {
 		{
 			if(typeof rules[i] == 'string')
 			{
-				eval$.Chain.parse(rules[i]);
+				rules[i] = $.Chain.parse(rules[i]);
 			}
 			else if(typeof rules[i] == 'object')
 			{
