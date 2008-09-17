@@ -1,24 +1,72 @@
 (function($){
-	
+
+/**
+ * Chain Namespace
+ * 
+ * @alias jQuery.Chain
+ * @namespace
+ */ 	
 $.Chain = 
 {
-	version: '0.1.9a',
+	/**
+	 * Version Number
+	 * 
+	 * @alias jQuery.Chain.version
+	 * @property {String}
+	 */ 
+	version: '0.1.9b',
 	
+	/**
+	 * Tag for use in @jQuery.Chain.parse@ (which is used in CustomUpdater).
+	 * It is can be altered.
+	 * 
+	 * @alias jQuery.Chain.tags
+	 * @property {Array}
+	 */ 
 	tag: ['{', '}'],
 	
 	services: {},
 	
+	/**
+	 * Register a service to the service manager.
+	 * 
+	 * @alias jQuery.Chain.service
+	 * 
+	 * @param {String}	name	Service Name
+	 * @param {Object}	proto 	Service Object Prototype
+	 * 
+	 * @example
+	 * $.Chain.service('test', {
+	 * 		// Default command handler
+	 * 		handler: function(option)
+	 * 		{
+	 * 			// do something
+	 * 		},
+	 * 		// $(selector).test('what', somearg)
+	 * 		$what: function(somearg)
+	 * 		{
+	 * 			// do something
+	 * 		}
+	 * });
+	 * 
+	 * $('#element').test();
+	 */ 
 	service: function(name, proto)
 	{
 		this.services[name] = proto;
 		
+		// Creating jQuery fn module with the service
 		$.fn[name] = function(options)
 		{
 			if(!this.length) return this;
 			
+			// Create Chain instance
 			var instance = this.data('chain-'+name);
+			
+			// Extract arguments
 			var args = Array.prototype.slice.call(arguments, 1);
 			
+			// Create Instance if it isn't already exist
 			if(!instance)
 			{
 				instance = $.extend({element: this}, $.Chain.services[name]);
@@ -29,31 +77,78 @@ $.Chain =
 			
 			var result;
 			
+			// Check whether to execute a command
 			if(typeof options == 'string' && instance['$'+options])
 				result = instance['$'+options].apply(instance, args);
+			
+			// Otherwise try to execute default handler
 			else if(instance['handler'])
 				result = instance['handler'].apply(instance, [options].concat(args));
+			
+			// Otherwise do nothing
 			else
 				result = this;
 			
+			// Remove instance on destroy
 			if(options == 'destroy')
 				this.removeData('chain-'+name);
 			
 			return result;
 		};
 	},
-	
+
+	/**
+	 * Extends service functionalities
+	 * 
+	 * @alias jQuery.Chain.extend
+	 * 
+	 * @param {String}	name	Service Name
+	 * @param {Object}	proto 	Service Object Prototype
+	 */ 
 	extend: function(name, proto)
 	{
 		if(this.services[name])
 			this.services[name] = $.extend(this.services[name], proto);
 	},
 	
+	/**
+	 * Check whether it is a jQuery Object
+	 * 
+	 * @alias jQuery.Chain.jobject
+	 * 
+	 * @param {Object} obj Object to be checked
+	 * 
+	 * @example
+	 * $.Chain.jobject($()) // returns true
+	 * $.Chain.jobject("test") // returns false
+	 * 
+	 * @return {Boolean} True or False
+	 */ 
 	jobject: function(obj)
 	{
 		return obj && obj.init == $.fn.init;
 	},
 	
+	/**
+	 * Check whether two jQuery Collection identic
+	 * 
+	 * @alias jQuery.Chain.jidentic
+	 * 
+	 * @param {Object}	j1	jQuery Object
+	 * @param {Object}	j2	jQuery Object
+	 * 
+	 * @example
+	 * a = $('div');
+	 * b = $('div');
+	 * c = $('div.test');
+	 * 
+	 * (a == b) //returns false
+	 * 
+	 * $.Chain.jidentic(a, b) // returns true
+	 * $.Chain.jidentic(a, c) // returns false
+	 * 
+	 * @return {Boolean} True or False
+	 */ 
 	jidentic: function(j1, j2)
 	{
 		if(!j1 || !j2 || j1.length != j2.length)
@@ -70,6 +165,19 @@ $.Chain =
 		
 	},
 	
+	/**
+	 * Parse string contained @{something}@ to a Function
+	 * that when executed replace those with the data it refers to.
+	 * You can change the @{}@ tag by modifying @jQuery.Chain.tag@
+	 * 
+	 * @param {String} text String
+	 * 
+	 * @example
+	 * var fn = $.Chain.parse("My name is {first} {last}");
+	 * fn({first:'Rizqi', last:'Ahmad'}) // returns "My name is Rizqi Ahmad"
+	 * 
+	 * @return {Function} template string.
+	 */ 
 	parse: (function()
 	{
 		var $this = {};

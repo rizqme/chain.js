@@ -67,7 +67,10 @@ $.Chain.service('chain', {
 			var self = $(this);
 			for(var i in rules)
 			{
-				el = $(i, self);
+				if(i == 'self')
+					el = self;
+				else
+					el = $(i, self);
 			
 				if (typeof rules[i] == 'function')
 				{
