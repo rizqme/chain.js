@@ -1,15 +1,36 @@
-(function($){
-
 /**
  * Chain Update Service
  * 
  * @alias update
  * 
- * @usage
- * $(selector).update(parameters);
- * 
+ * @syntax $(selector).update(parameters);
  */ 
+
+(function($){
+
+/**
+ * Chain Update Service Object - Providing methods of @update@.
+ * All method listed here can only be used internally
+ * using @jQuery.Chain.service@ or @jQuery.Chain.extend@
+ * 
+ * @namespace
+ * 
+ * @alias jQuery.Chain.services.update
+ * 
+ * @see jQuery.Chain.service
+ * @see jQuery.Chain.extend
+ */ 
+
 $.Chain.service('update', {
+	/**
+	 * Default Handler
+	 * 
+	 * @alias jQuery.Chain.services.update.handler
+	 * 
+	 * @see jQuery.Chain.service
+	 * @see jQuery.Chain.services.update.bind
+	 * @see jQuery.Chain.services.update.trigger
+	 */ 
 	handler: function(opt)
 	{
 		if(typeof opt == 'function')
@@ -23,6 +44,7 @@ $.Chain.service('update', {
 	 * just like jQuery’s @click()@ or @mouseover()@.
 	 * 
 	 * @alias update(fn)
+	 * @alias jQuery.Chain.services.update.bind
 	 * 
 	 * @param {Function} fn Listener
 	 * 
@@ -35,6 +57,8 @@ $.Chain.service('update', {
 	 * $('#person').item({name: 'Rizqi'})
 	 * 
 	 * @return {Object} jQuery Object
+	 * 
+	 * @see jQuery.Chain.services.update.handler
 	 */ 
 	bind: function(fn)
 	{
@@ -43,9 +67,10 @@ $.Chain.service('update', {
 	
 	/**
 	 * If no argument or "hard" is passed,
-	 * it will update the elementand trigger the update event.
+	 * it will update the element and trigger the update event.
 	 * 
 	 * @alias update(opt)
+	 * @alias jQuery.Chain.services.update.trigger
 	 * 
 	 * @param {String} opt If 'hard', it will update each of items
 	 * 
@@ -54,6 +79,7 @@ $.Chain.service('update', {
 	 * 
 	 * @return {Object} jQuery Object
 	 * 
+	 * @see jQuery.Chain.services.update.handler
 	 */ 
 	trigger: function(opt)
 	{

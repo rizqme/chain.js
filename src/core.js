@@ -21,10 +21,20 @@ $.Chain =
 	 * It is can be altered.
 	 * 
 	 * @alias jQuery.Chain.tags
+	 * 
 	 * @property {Array}
+	 * 
+	 * @see jQuery.Chain.parse
 	 */ 
 	tag: ['{', '}'],
 	
+	/**
+	 * Namespace containing all defined services.
+	 * 
+	 * @namespace
+	 * 
+	 * @alias jQuery.Chain.services
+	 */ 
 	services: {},
 	
 	/**
@@ -35,7 +45,7 @@ $.Chain =
 	 * @param {String}	name	Service Name
 	 * @param {Object}	proto 	Service Object Prototype
 	 * 
-	 * @example
+	 * @example Create a Custom Service
 	 * $.Chain.service('test', {
 	 * 		// Default command handler
 	 * 		handler: function(option)
@@ -50,6 +60,8 @@ $.Chain =
 	 * });
 	 * 
 	 * $('#element').test();
+	 * 
+	 * @see jQuery.Chain.extend
 	 */ 
 	service: function(name, proto)
 	{
@@ -69,8 +81,10 @@ $.Chain =
 			// Create Instance if it isn't already exist
 			if(!instance)
 			{
+				// Create Instance
 				instance = $.extend({element: this}, $.Chain.services[name]);
 				this.data('chain-'+name, instance);
+				// Initialize if possible
 				if(instance.init)
 					instance.init();
 			}
@@ -98,12 +112,14 @@ $.Chain =
 	},
 
 	/**
-	 * Extends service functionalities
+	 * Extends service functionalities.
 	 * 
 	 * @alias jQuery.Chain.extend
 	 * 
 	 * @param {String}	name	Service Name
 	 * @param {Object}	proto 	Service Object Prototype
+	 * 
+	 * @see jQuery.Chain.service
 	 */ 
 	extend: function(name, proto)
 	{
@@ -118,11 +134,13 @@ $.Chain =
 	 * 
 	 * @param {Object} obj Object to be checked
 	 * 
-	 * @example
+	 * @example Using @jobject@
 	 * $.Chain.jobject($()) // returns true
 	 * $.Chain.jobject("test") // returns false
 	 * 
 	 * @return {Boolean} True or False
+	 * 
+	 * @see jQuery.Chain.jindentic
 	 */ 
 	jobject: function(obj)
 	{
@@ -137,7 +155,7 @@ $.Chain =
 	 * @param {Object}	j1	jQuery Object
 	 * @param {Object}	j2	jQuery Object
 	 * 
-	 * @example
+	 * @example Using @jidentic@
 	 * a = $('div');
 	 * b = $('div');
 	 * c = $('div.test');
@@ -148,6 +166,8 @@ $.Chain =
 	 * $.Chain.jidentic(a, c) // returns false
 	 * 
 	 * @return {Boolean} True or False
+	 * 
+	 * @see jQuery.Chain.jobject
 	 */ 
 	jidentic: function(j1, j2)
 	{
@@ -172,11 +192,13 @@ $.Chain =
 	 * 
 	 * @param {String} text String
 	 * 
-	 * @example
+	 * @example Using @
 	 * var fn = $.Chain.parse("My name is {first} {last}");
 	 * fn({first:'Rizqi', last:'Ahmad'}) // returns "My name is Rizqi Ahmad"
 	 * 
 	 * @return {Function} template string.
+	 * 
+	 * @see jQuery.Chain.tag
 	 */ 
 	parse: (function()
 	{
