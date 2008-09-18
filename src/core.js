@@ -78,9 +78,12 @@ $.Chain =
 			// Extract arguments
 			var args = Array.prototype.slice.call(arguments, 1);
 			
-			// Create Instance if it isn't already exist
+			// Create Instance if it doesn't already exist
 			if(!instance)
 			{
+			  // Return immediately if destroyed is called before Instance is created
+				if(options == 'destroy') 
+					return this;
 				// Create Instance
 				instance = $.extend({element: this}, $.Chain.services[name]);
 				this.data('chain-'+name, instance);

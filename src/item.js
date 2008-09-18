@@ -181,6 +181,10 @@ $.Chain.service('item', {
 		}
 		
 		return this.element;
+	},
+	$destroy: function()
+	{
+		return this.element;
 	}
 });
 
