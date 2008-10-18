@@ -1,29 +1,94 @@
+/**
+ * Chain Items Service.
+ * Method to bind items to object.
+ * 
+ * @alias items
+ * 
+ * @syntax $(selector).items(parameters);
+ */ 
+
 (function($){
 
+/**
+ * Chain Items Manager - Providing methods of @items@.
+ * All method listed here can only be used internally
+ * using @jQuery.Chain.service@ or @jQuery.Chain.extend@
+ * 
+ * @namespace
+ * 
+ * @alias jQuery.Chain.services.items
+ * 
+ * @see jQuery.Chain.service
+ * @see jQuery.Chain.extend
+ */ 
+
 $.Chain.service('items', {
+	/**
+	 * Collection of Function for getting items
+	 * 
+	 * @namespace
+	 * @alias jQuery.Chain.services.items.collections
+	 * 
+	 * @see jQuery.Chain.services.items.collection
+	 */ 
 	collections: 
 	{
+		/**
+		 * Get all items, including hidden
+		 * 
+		 * @alias jQuery.Chain.services.items.collections.all
+		 * 
+		 * @return {Object} jQuery Object containing items
+		 */ 
 		all: function()
 		{
 			return this.element.chain('anchor').children('.chain-item');
 		},
 		
+		/**
+		 * Get all visible items
+		 * 
+		 * @alias jQuery.Chain.services.items.collections.visible
+		 * 
+		 * @return {Object} jQuery Object containing items
+		 */ 
 		visible: function()
 		{
 			return this.element.chain('anchor').children('.chain-item:visible');
 		},
 		
+		/**
+		 * Get all hidden items
+		 * 
+		 * @alias jQuery.Chain.services.items.collections.hidden
+		 * 
+		 * @return {Object} jQuery Object containing items
+		 */ 
 		hidden: function()
 		{
 			return this.element.chain('anchor').children('.chain-item:hidden');
 		},
 		
+		/**
+		 * Get self
+		 * 
+		 * @alias jQuery.Chain.services.items.collections.self
+		 * 
+		 * @return {Object} jQuery Object of the element
+		 */ 
 		self: function()
 		{
 			return this.element;
 		}
 	},
 	
+	/**
+	 * Initializer. Executed once at the first time @items@ invoked.
+	 * 
+	 * @alias jQuery.Chain.services.items.init
+	 * 
+	 * @see jQuery.Chain.service
+	 */ 
 	init: function()
 	{
 		this.isActive = false;
@@ -32,76 +97,218 @@ $.Chain.service('items', {
 		this.collections = $.extend({}, this.collections);
 	},
 	
+	/**
+	 * Default handler.
+	 * 
+	 * @alias jQuery.Chain.services.items.handler
+	 * 
+	 * @param {Object} obj Object to be handled
+	 * 
+	 * @return {Object} jQuery Object
+	 * 
+	 * @see jQuery.Chain.service
+	 * @see jQuery.Chain.services.items.handleObject
+	 * @see jQuery.Chain.services.items.handleElement
+	 * @see jQuery.Chain.services.items.handleArray
+	 * @see jQuery.Chain.services.items.handleNumber
+	 * @see jQuery.Chain.services.items.handleTrue
+	 * @see jQuery.Chain.services.items.handleDefault
+	 */ 
 	handler: function(obj)
 	{
+		// Array
 		if(obj instanceof Array)
-			return this.$merge(obj);
+			{return this.handleArray(obj);}
+		// Inactive
 		else if(!this.isActive)
-			return $().eq(-1);
+			{return $().eq(-1);}
+		// jQuery Object
 		else if($.Chain.jobject(obj))
-			return (!$.Chain.jidentic(obj, obj.item('root')) && $.Chain.jidentic(this.element, obj.item('root')))
-				? obj : $().eq(-1);
+			{return this.handleElement(obj);}
+		// Normal Object
 		else if(typeof obj == 'object')
-			return this.getByData(obj);
+			{return this.handleObject(obj);}
+		// Number
 		else if(typeof obj == 'number')
-			return this.getByNumber(obj);
+			{return this.handleNumber(obj);}
+		// True
 		else if(obj === true)
-			return this.collection('all');
+			{return this.handleTrue();}
+		// Default
 		else
-			return this.collection('visible');
+			{return this.handleDefault();}
 	},
 	
-	getByData: function(item)
+	/**
+	 * If a Data Object is given, it will return the item element
+	 * containing the object if it exists, otherwise empty.
+	 * 
+	 * @alias items(object)
+	 * @alias jQuery.Chain.services.items.handleObject
+	 * 
+	 * @param {Object} obj Data Object
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
+	handleObject: function(obj)
 	{
-		return this.collection('all').filter(function(){return $(this).item() == item});
+		// Get Element By Data
+		return this.collection('all').filter(function(){return $(this).item() == obj;});
 	},
 	
-	getByNumber: function(number)
+	/**
+	 * If a jQuery Element is given, it will return itself if it is part of the items,
+	 * otherwise empty jQuery object.
+	 * 
+	 * @alias items(element)
+	 * @alias jQuery.Chain.services.items.handleElement
+	 * 
+	 * @param {Object} obj jQuery Object
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
+	handleElement: function(obj)
 	{
+		// Check element whether it is part of items or not.
+		if(!$.Chain.jidentic(obj, obj.item('root')) && $.Chain.jidentic(this.element, obj.item('root')))
+			{return obj;}
+		else
+			{return $().eq(-1);}
+	},
+	
+	/**
+	 * If array is given, it will merge it to current items
+	 * 
+	 * @alias items(array)
+	 * @alias jQuery.Chain.services.items.handleArray
+	 * 
+	 * @param {Array} array Array of Data
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
+	handleArray: function(array)
+	{
+		// Array will be merged in
+		return this.$merge(array);
+	},
+	
+	/**
+	 * If number is given, it will get the object with the current number. Use -1 to get the last number.
+	 * 
+	 * @alias items(number)
+	 * @alias jQuery.Chain.services.items.handleNumber
+	 * 
+	 * @param {Number} number Index
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
+	handleNumber: function(number)
+	{
+		// if -1, it will get the last.
 		if(number == -1)
-			return this.collection('visible').filter(':last');
+			{return this.collection('visible').filter(':last');}
 		else
-			return this.collection('visible').eq(number);
+			{return this.collection('visible').eq(number);}
 	},
 	
+	/**
+	 * If @true@ is given, it will get all items including the hidden one.
+	 * 
+	 * @alias items(true)
+	 * @alias jQuery.Chain.services.items.handleTrue
+	 * 
+	 * @return {Object} jQuery Object
+	 * 
+	 * @see jQuery.Chain.services.items.collections.all
+	 */ 
+	handleTrue: function()
+	{
+		return this.collection('all');
+	},
+	
+	/**
+	 * If nothing is given, it will get all visible items.
+	 * 
+	 * @alias items(true)
+	 * @alias jQuery.Chain.services.items.handleTrue
+	 * 
+	 * @return {Object} jQuery Object
+	 * 
+	 * @see jQuery.Chain.services.items.collections.visible
+	 */ 
+	handleDefault: function()
+	{
+		return this.collection('visible');
+	},
+	
+	/**
+	 * Update element
+	 * 
+	 * @alias jQuery.Chain.services.items.update
+	 */ 
 	update: function()
 	{
 		this.element.update();
 	},
 	
+	/**
+	 * Clear all items
+	 * 
+	 * @alias jQuery.Chain.services.items.empty
+	 */ 
 	empty: function()
 	{
 		var all = this.collection('all');
 		
+		// Remove items
 		// Make it run in the background. for responsiveness.
-		setTimeout(function(){all.each(function(){$(this).item('remove', true)});}, 1);
+		setTimeout(function(){all.each(function(){$(this).item('remove', true);});}, 1);
 		
+		// Empty anchor container
 		this.element.chain('anchor').empty();
 	},
 	
+	/**
+	 * Get collection of items. Define a collection by adding a function argument
+	 * 
+	 * @alias jQuery.Chain.services.items.collection
+	 * 
+	 * @param {String} col Collection name
+	 * @param {Function} fn Create a collection function
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
 	collection: function(col, fn)
 	{
 		if(arguments.length > 1)
 		{
 			if(typeof fn == 'function')
-				this.collections[col] = fn;
+				{this.collections[col] = fn;}
 			
 			return this.element;
 		}
 		else
 		{
 			if(this.collections[col])
-				return this.collections[col].apply(this);
+				{return this.collections[col].apply(this);}
 			else
-				return $().eq(-1);
+				{return $().eq(-1);}
 		}
 		
 	},
 	
+	/**
+	 * Items Updater, called by @$(element).update()@
+	 * 
+	 * @alias items('update')
+	 * @alias jQuery.Chain.services.items.$update
+	 * 
+	 * @return {Object} jQuery Element
+	 */ 
 	$update: function()
 	{
 		if(!this.element.chain('active') || !this.isActive)
-			return this.element;
+			{return this.element;}
 		
 		var self = this;
 		var builder = this.element.chain('builder');
@@ -115,9 +322,9 @@ $.Chain.service('items', {
 				.item('root', self.element);
 			
 			if(self.linkElement && $.Chain.jobject(this) && this.item())
-				clone.item('link', this, 'self');
+				{clone.item('link', this, 'self');}
 			else
-				clone.item(this);
+				{clone.item(this);}
 			
 			clone.chain(builder);
 		};
@@ -134,30 +341,27 @@ $.Chain.service('items', {
 		return this.element;
 	},
 	
-	$push: function()
-	{
-		this.isActive = true;
-		this.pushBuffer = this.pushBuffer.concat(Array.prototype.slice.call(arguments));
-		this.update();
-		
-		return this.element;
-	},
-	
-	$shift: function()
-	{
-		this.isActive = true;
-		this.shiftBuffer = this.shiftBuffer.concat(Array.prototype.slice.call(arguments));
-		this.update();
-		
-		return this.element;
-	},
-	
+	/**
+	 * Add item(s). use @items('add', 'shift', item)@ to add item at the top
+	 * 
+	 * @alias items('add')
+	 * @alias jQuery.Chain.services.items.$add
+	 * 
+	 * @param {Object} item
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
 	$add: function()
 	{
+		if(this.linkElement)
+			{return this.element;}
+		
 		var cmd;
 		var args = Array.prototype.slice.call(arguments);
+		// Extract command
 		if(typeof args[0] == 'string')
-			cmd = args.shift();
+			{cmd = args.shift();}
+		
 		var buffer = (cmd == 'shift') ? 'shiftBuffer' : 'pushBuffer';
 		
 		this.isActive = true;
@@ -167,63 +371,126 @@ $.Chain.service('items', {
 		return this.element;
 	},
 	
+	/**
+	 * Merge items with array of item data
+	 * 
+	 * @alias items('merge')
+	 * @alias jQuery.Chain.services.items.$merge
+	 * 
+	 * @param {String} cmd Switch for push/shift
+	 * @param {Array} items Item Data
+	 * 
+	 * @return {Object} jQuery Element
+	 */ 
 	$merge: function(cmd, items)
 	{
+		if(this.linkElement)
+			{return this.element;}
+		
 		if(typeof cmd != 'string')
-			items = cmd;
+			{items = cmd;}
 		var buffer = (cmd == 'shift') ? 'shiftBuffer' : 'pushBuffer';
 		
 		this.isActive = true;
 		if($.Chain.jobject(items))
-			this[buffer] = this[buffer].concat(items.map(function(){return $(this)}).get());
+			{this[buffer] = this[buffer].concat(items.map(function(){return $(this);}).get());}
 		else if(items instanceof Array)
-			this[buffer] = this[buffer].concat(items);
+			{this[buffer] = this[buffer].concat(items);}
 		this.update();
 		
 		return this.element;
 	},
 	
+	/**
+	 * Replace items with new items array
+	 * 
+	 * @alias items('replace')
+	 * @alias jQuery.Chain.services.items.$replace
+	 * 
+	 * @param {String} cmd Switch for push/shift
+	 * @param {Array} items Item Data
+	 * 
+	 * @return {Object} jQuery Element
+	 */ 
 	$replace: function(cmd, items)
 	{
+		if(this.linkElement)
+			{return this.element;}
+		
 		if(typeof cmd != 'string')
-			items = cmd;
+			{items = cmd;}
 		var buffer = (cmd == 'shift') ? 'shiftBuffer' : 'pushBuffer';
 		
 		this.isActive = true;
 		this.empty();
 		
 		if($.Chain.jobject(items))
-			this[buffer] = items.map(function(){return $(this)}).get();
+			{this[buffer] = items.map(function(){return $(this);}).get();}
 		else if(items instanceof Array)
-			this[buffer] = items;
+			{this[buffer] = items;}
 		
 		this.update();
 		
 		return this.element;
 	},
 	
+	/**
+	 * Remove item
+	 * 
+	 * @alias items('remove')
+	 * @alias jQuery.Chain.services.items.$remove
+	 * 
+	 * @param {Object, Number} item
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
 	$remove: function()
 	{
+		if(this.linkElement)
+			{return this.element;}
+		
 		for(var i=0; i<arguments.length; i++)
-			this.handler(arguments[i]).item('remove', true);
+			{this.handler(arguments[i]).item('remove', true);}
 		this.update();
 		
 		return this.element;
 	},
 	
+	/**
+	 * Reorder Item
+	 * 
+	 * @alias items('reorder')
+	 * @alias jQuery.Chain.services.items.$reorder
+	 * 
+	 * @param {Object} item1 Item 1
+	 * @param {Object} item2 Item 2
+	 * 
+	 * @return {Object} jQuery object
+	 */ 
 	$reorder: function(item1, item2)
 	{
 		if(item2)
-			this.handler(item1).before(this.handler(item2));
+			{this.handler(item1).before(this.handler(item2));}
 		else
-			this.handler(item1).appendTo(this.element.chain('anchor'));
+			{this.handler(item1).appendTo(this.element.chain('anchor'));}
 		this.update();
 		
 		return this.element;
 	},
 	
+	/**
+	 * Clear all items
+	 * 
+	 * @alias items('empty')
+	 * @alias jQuery.Chain.services.items.$empty
+	 * 
+	 * @return {Object} jQuery object
+	 */ 
 	$empty: function()
 	{
+		if(this.linkElement)
+			{return this.element;}
+		
 		this.empty();
 		this.shiftBuffer = [];
 		this.pushBuffer = [];
@@ -232,13 +499,36 @@ $.Chain.service('items', {
 		return this.element;
 	},
 	
+	/**
+	 * Like @items()@ but returns array of data instead of the jQuery object.
+	 * 
+	 * @alias items('data')
+	 * @alias jQuery.Chain.services.items.$data
+	 * 
+	 * @return {Array} list of data
+	 */ 
 	$data: function(x)
 	{
 		return this.handler(x).map(function(){return $(this).item();}).get();
 	},
 	
+	/**
+	 * Bind Items to other (chained) element. If one of them is updated,
+	 * the linked element will be updated.
+	 * 
+	 * @alias items('link')
+	 * @alias jQuery.Chain.services.items.$link
+	 * 
+	 * @param {Object} element element/selector to be linked with
+	 * @param {String} collection Collection to be linked with (has to be @"self"@ if linked to item)
+	 * 
+	 * @return {Object} jQuery Element
+	 * 
+	 * @see jQuery.Chain.services.items.collection
+	 */ 
 	$link: function(element, collection)
 	{
+		// Remove linked element if it already exist
 		if(this.linkElement)
 		{
 			this.linkElement.unbind('update', this.linkUpdater);
@@ -246,25 +536,39 @@ $.Chain.service('items', {
 		}
 		
 		element = $(element);
+		// If element exists
 		if(element.length)
 		{
 			var self = this;
 			this.linkElement = element;
+			// Create Collector Function
 			this.linkFunction = function()
 			{
 				if(typeof collection == 'function')
-					try{return collection.call(self.element, self.linkElement)}catch(e){return $().eq(-1)}
+				{
+					try{
+						return collection.call(self.element, self.linkElement);
+					}catch(e){
+						return $().eq(-1);
+					}
+				}
 				else if(typeof collection == 'string')
+				{
 					return self.linkElement.items('collection', collection);
+				}
 				else
+				{
 					return $().eq(-1);
+				}
 			};
 			
+			// Create Updater Function
 			this.linkUpdater = function()
 			{
 				self.element.items('replace', self.linkFunction());
 			};
 			
+			// Bind updater to linked element
 			this.linkElement.bind('update', this.linkUpdater);
 			this.linkUpdater();
 		}
@@ -272,31 +576,68 @@ $.Chain.service('items', {
 		return this.element;
 	},
 	
+	/**
+	 * Get index of an Item
+	 * 
+	 * @alias items('index')
+	 * @alias jQuery.Chain.services.items.$index
+	 * 
+	 * @param {Object} item
+	 * 
+	 * @return {Number} index
+	 */ 
 	$index: function(item)
 	{
 		return this.collection('all').index(this.handler(item));
 	},
 	
+	/**
+	 * Get collection of items. Define a collection by adding a function argument
+	 * 
+	 * @alias items('collection')
+	 * @alias jQuery.Chain.services.items.$collection
+	 * 
+	 * @param {String} col Collection name
+	 * @param {Function} fn Create a collection function
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
 	$collection: function()
 	{
 		return this.collection.apply(this, Array.prototype.slice.call(arguments));
 	},
 	
+	/**
+	 * Check Status of @items@
+	 * 
+	 * @alias items('active')
+	 * @alias jQuery.Chain.services.items.$active
+	 * 
+	 * @return {Boolean} Status
+	 */ 
 	$active: function()
 	{
 		return this.isActive;
 	},
 	
+	/**
+	 * Backup Item to the state before being built.
+	 * 
+	 * @alias items('backup')
+	 * @alias jQuery.Chain.services.items.$backup
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
 	$backup: function()
 	{
 		if(!this.element.chain('active') || !this.isActive)
-			return;
+			{return this.element;}
 		
 		var buffer = [];
 		this.collection('all').each(function(){
 			var item = $(this).item();
 			if(item)
-				buffer.push(item);
+				{buffer.push(item);}
 		});
 		
 		this.pushBuffer = buffer.concat(this.pushBuffer);
@@ -306,6 +647,14 @@ $.Chain.service('items', {
 		return this.element;
 	},
 	
+	/**
+	 * Destroy items service.
+	 * 
+	 * @alias items('destroy')
+	 * @alias jQuery.Chain.services.items.$destroy
+	 * 
+	 * @return {Object} jQuery Element
+	 */ 
 	$destroy: function()
 	{
 		this.empty();
@@ -315,6 +664,11 @@ $.Chain.service('items', {
 
 // Filtering extension
 $.Chain.extend('items', {
+	/**
+	 * Filtering subroutine
+	 * 
+	 * @alias jQuery.Chain.services.items.doFilter
+	 */ 
 	doFilter: function()
 	{
 		var props = this.searchProperties;
@@ -322,24 +676,32 @@ $.Chain.extend('items', {
 		
 		if(text)
 		{
+			// Make text lowerCase if it is a string
 			if(typeof text == 'string')
-				text = text.toLowerCase();
+				{text = text.toLowerCase();}
 			
+			// Filter items
 			var items = this.element.items(true).filter(function(){
 				var data = $(this).item();
+				// If search properties is defined, search for text in those properties
 				if(props)
 				{
 					for(var i=0; i<props.length; i++)
-						if(typeof data[i] == 'string'
-							&& !!(typeof text == 'string' ? data[i].toLowerCase() : data[i]).match(text))
-							return true;
+					{
+						if(typeof data[props[i]] == 'string'
+							&& !!(typeof text == 'string' ? data[props[i]].toLowerCase() : data[props[i]]).match(text))
+							{return true;}
+					}
 				}
+				// Otherwise search in all properties
 				else
 				{
-					for(var i in data)
-						if(typeof data[i] == 'string'
-							&& !!(typeof text == 'string' ? data[i].toLowerCase() : data[i]).match(text))
-							return true;
+					for(var prop in data)
+					{
+						if(typeof data[prop] == 'string'
+							&& !!(typeof text == 'string' ? data[prop].toLowerCase() : data[prop]).match(text))
+							{return true;}
+					}
 				}
 			});
 			this.element.items(true).not(items).hide();
@@ -353,20 +715,33 @@ $.Chain.extend('items', {
 		}
 	},
 	
+	/**
+	 * Filter items by criteria. Filtered items will be hidden.
+	 * 
+	 * @alias items('filter')
+	 * @alias jQuery.Chain.services.items.$filter
+	 * 
+	 * @param {String, RegExp} text Search keyword
+	 * @param {String, Array} properties Search properties
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
 	$filter: function(text, properties)
 	{
-		if(arguments.length == 0)
-			return this.update();
+		// If no argument, just refilter
+		if(!arguments.length)
+			{return this.update();}
 		
 		this.searchText = text;
 		
-		if(typeof properties == 'text')
-			this.searchProperties = [properties];
+		if(typeof properties == 'string')
+			{this.searchProperties = [properties];}
 		else if(properties instanceof Array)
-			this.searchProperties = properties;
+			{this.searchProperties = properties;}
 		else
-			this.searchProperties = null;
+			{this.searchProperties = null;}
 		
+		// Bind to preupdate
 		if(!this.searchBinding)
 		{
 			var self = this;
@@ -380,6 +755,11 @@ $.Chain.extend('items', {
 
 // Sorting extension
 $.Chain.extend('items', {
+	/**
+	 * Sorting subroutine
+	 * 
+	 * @alias jQuery.Chain.services.items.doSort
+	 */ 
 	doSort: function()
 	{
 		var name = this.sortName;
@@ -406,7 +786,7 @@ $.Chain.extend('items', {
 			array = opt.desc ? array.reverse() : array;
 			
 			for(var i=0; i<array.length; i++)
-				this.element.chain('anchor').append(array[i]);
+				{this.element.chain('anchor').append(array[i]);}
 			
 			opt.desc = opt.toggle ? !opt.desc : opt.desc;
 		}
@@ -417,15 +797,26 @@ $.Chain.extend('items', {
 		}
 	},
 	
+	/**
+	 * Sort items by property.
+	 * 
+	 * @alias items('sort')
+	 * @alias jQuery.Chain.services.items.$sort
+	 * 
+	 * @param {String} name sorting property
+	 * @param {Object} opt {toggle:true/false, desc:true/false, type:'number/default'}
+	 * 
+	 * @return {Object} jQuery Object
+	 */ 
 	$sort: function(name, opt)
 	{
 		if(!name && name !== null && name !== false)
-			return this.update();
+			{return this.update();}
 		
 		if(this.sortName != name)
-			this.sortOpt = $.extend({desc:false, type:'default', toggle:false}, opt);
+			{this.sortOpt = $.extend({desc:false, type:'default', toggle:false}, opt);}
 		else
-			$.extend(this.sortOpt, opt);
+			{$.extend(this.sortOpt, opt);}
 		
 		this.sortName = name;
 		

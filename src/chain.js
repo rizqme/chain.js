@@ -64,9 +64,9 @@ $.Chain.service('chain', {
 		this.element.item('backup');
 		
 		if(typeof obj == 'object')
-			this.handleUpdater(obj);
+			{this.handleUpdater(obj);}
 		else if(typeof obj == 'function')
-			this.handleBuilder(obj);
+			{this.handleBuilder(obj);}
 		
 		// Empty element, if @item@ it will filled again later
 		this.anchor.empty();
@@ -153,7 +153,7 @@ $.Chain.service('chain', {
 		
 		// Extract Anchor
 		if(rules.anchor)
-			this.setAnchor(rules.anchor);
+			{this.setAnchor(rules.anchor);}
 		delete rules.anchor;
 		
 		// Extract Override
@@ -173,7 +173,7 @@ $.Chain.service('chain', {
 				for(var j in rules[i])
 				{
 					if(typeof rules[i][j] == 'string')
-						rules[i][j] = $.Chain.parse(rules[i][j]);
+						{rules[i][j] = $.Chain.parse(rules[i][j]);}
 				}
 			}
 		}
@@ -187,10 +187,10 @@ $.Chain.service('chain', {
 			{
 				// If self, update the element itself
 				if(i == 'self')
-					el = self;
+					{el = self;}
 				// Otherwise find element inside self
 				else
-					el = $(i, self);
+					{el = $(i, self);}
 				
 				// Executing
 				// If no attributes, put the result to html (value if input)
@@ -198,7 +198,7 @@ $.Chain.service('chain', {
 				{
 					val = rules[i].apply(self, [data, el]);
 					if(typeof val == 'string')
-						el.not(':input').html(val).end().filter(':input').val(val);
+						{el.not(':input').html(val).end().filter(':input').val(val);}
 				}
 				// If attributes, then execute the function for each attr.
 				else if(typeof rules[i] == 'object')
@@ -212,16 +212,16 @@ $.Chain.service('chain', {
 							{
 								// Some special attributes
 								if(j == 'content')
-									el.html(val);
+									{el.html(val);}
 								else if(j == 'text')
-									el.text(val);
+									{el.text(val);}
 								else if(j == 'value')
-									el.val(val);
+									{el.val(val);}
 								else if(j == 'class' || j == 'className')
-									el.addClass(val);
+									{el.addClass(val);}
 								// Otherwise fill attribute as normal
 								else
-									el.attr(j, val);
+									{el.attr(j, val);}
 							}
 							
 						}
@@ -236,10 +236,10 @@ $.Chain.service('chain', {
 		this.builder = function(root)
 		{
 			if(builder)
-				builder.apply(this, [root]);
+				{builder.apply(this, [root]);}
 			
 			if(!override)
-				defBuilder.apply(this);
+				{defBuilder.apply(this);}
 			
 			// Here goes the updater
 			this.update(fn);
@@ -307,13 +307,16 @@ $.Chain.service('chain', {
 		
 		// Default Updater
 		if(res)
+		{
 			this.bind('update', function(event, data){
 				var self = $(this);
 				// Iterate through data
 				// Find element with the same class as data property
 				// Insert data depending of elemen type
 				for(var i in data)
+				{	
 					if(typeof data[i] != 'object' && typeof data[i] != 'function')
+					{
 						// This prevents selector to select inside nested chain-element
 						// Important to support recursion & nested element
 						// NEED OPTIMIZATION
@@ -321,13 +324,16 @@ $.Chain.service('chain', {
 							.each(function(){
 								var match = $(this);
 								if(match.filter(':input').length)
-									match.val(data[i]);
+									{match.val(data[i]);}
 								else if(match.filter('img').length)
-									match.attr('src', data[i]);
+									{match.attr('src', data[i]);}
 								else
-									match.html(data[i]);
+									{match.html(data[i]);}
 							});
+					}
+				}
 			});
+		}
 	},
 	
 	/**
@@ -426,11 +432,11 @@ $.Chain.service('chain', {
 	{
 		// Returns current Template (jQuery Object)
 		if(!arguments.length)
-			return $('<div>').html(this.template).children().eq(this.tplNumber);
+			{return $('<div>').html(this.template).children().eq(this.tplNumber);}
 		
 		// Returns raw HTML Template
 		if(arg == 'raw')
-			return this.template;
+			{return this.template;}
 		
 		// Switch template by Number
 		if(typeof arg == 'number')
@@ -444,9 +450,9 @@ $.Chain.service('chain', {
 			var node = tpl.filter(arg).eq(0);
 			
 			if(node.length)
-				this.tplNumber = tpl.index(node);
+				{this.tplNumber = tpl.index(node);}
 			else
-				return this.element; // If not found do nothing
+				{return this.element;} // If not found do nothing
 		}
 		
 		this.element.items('backup');
@@ -474,9 +480,9 @@ $.Chain.service('chain', {
 	$builder: function(builder)
 	{
 		if(builder)
-			return this.handler(builder);
+			{return this.handler(builder);}
 		else
-			return this.builder;
+			{return this.builder;}
 	},
 	
 	/**
@@ -506,19 +512,21 @@ $.Chain.service('chain', {
 	$plugin: function(name, fn)
 	{
 		if(fn === null)
-			delete this.plugins[name];
+			{delete this.plugins[name];}
 		else if(typeof fn == 'function')
-			this.plugins[name] = fn;
+			{this.plugins[name] = fn;}
 		else if(name && !fn)
-			return this.plugins[name];
+			{return this.plugins[name];}
 		else
-			return this.plugins;
+			{return this.plugins;}
 		
 		if(typeof fn == 'function')
+		{
 			this.element.items(true).each(function(){
 				var self = $(this);
 				fn.call(self, self.item('root'));
 			});
+		}
 		
 		this.element.update();
 		

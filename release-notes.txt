@@ -7,4 +7,8 @@ v0.2:
 - added items('add', 'push') and items('add', 'shift')
 - now chain({...}) only extend defaultBuilder, override using
   chain({override:true})
+- Updater now can update the item itself by defining
+  chain({self: "{somedata}"})
+- Now a packed version (using Dean Edward's packer)
+- In Code Documentation & Documentation Generator
 - bug fixes

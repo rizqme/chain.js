@@ -1,0 +1,276 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Chain.js Documentation</title>
+<style type="text/css" media="screen">
+body {
+	color: #222;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 5px;
+}
+
+p.desc {
+	color: #333;
+}
+
+.toc {
+	font-size: 14px;
+	border: 1px solid #6593e9;
+	background: #cedbf3;
+}
+
+.toc a {
+	color: #294477;
+}
+
+.list, .list ul {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+h2 {
+	background: #0099F3;
+	padding: 5px;
+	color: white;
+}
+
+ul h2 small {
+	font-size: small;
+}
+
+a.top {
+	font-size: 12px;
+	float: right;
+	color: white;
+}
+
+.type {
+	font-weight: normal;
+	margin-right: 5px;
+}
+
+.deprecated {
+	color: red;
+	font-size: 12px;
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+.prototype {
+	color: #DADADA;
+	font-weight: normal;
+	margin-right: 10px;
+}
+
+h3 {
+	font-size: 14px;
+	padding: 0px;
+	margin-bottom: 2px;
+}
+
+.param, .return {
+	background: #DFDFDF;
+	margin-bottom: 5px;
+	padding: 5px;
+}
+
+.alias, .see {
+	font-size: 14px;
+	color: #666;
+}
+
+.alias a, .see a {
+	color: #0099F3;
+}
+
+.param-types, .return-types {
+	color: green;
+	margin-right: 10px;
+}
+
+.param-name {
+	margin-right: 10px;
+}
+
+.param-desc, .return-desc {
+	color: #666;
+	font-size: small;
+}
+
+.example {
+	background: #DFDFDF;
+	padding: 5px;
+}
+
+h4 {
+	padding: 5px;
+	margin: 0px;
+	margin-bottom: 5px;
+	font-size: smaller;
+	background: #999;
+	color: #222;
+}
+
+.example-code {
+	background: #222;
+	margin: 0px;
+	padding: 5px;
+	color: white;
+}
+
+ul ul h2 {
+	background: #0088A3;
+	font-size: 16px;
+}
+
+ul ul .type {
+	margin-right: 10px;
+}
+
+ul ul .desc {
+	font-size: 14px;
+}
+
+.source, .source a {
+	font-size: 12px;
+	color: #999;
+}
+
+</style>
+</head>
+<body>
+	<!--% 
+		var writeName = function(data)
+		{
+			var out = '';
+			out += data.parent ? data.parent+'.' : '';
+			out += data.prototype ? 'prototype.' : '';
+			out += data.name;
+			return out;
+		};
+	%-->
+	<!--:macro doc(data, showParent):-->
+	<h2>
+		<small class="type">${data.type}</small>
+		<!--:if data.prototype:--><small class="prototype">prototype</small><!--:/if:-->
+		<a name="${writeName(data)}" class="name">${showParent?writeName(data):data.name}</a>
+		<!--:if data.deprecated:--><span class="deprecated">deprecated!</span><!--:/if:-->
+		<a class="top" href="#title">top</a>
+	</h2>
+	<!--:if data.aliases.length:-->
+	<p class="alias">Also known as
+		<!--:each alias in data.aliases:-->
+		<a href="#${alias}">${alias}</a>
+		<!--:/each:-->
+	</p>
+	<!--:/if:-->
+	<p class="desc">${textile(data.description)}</p>
+	<!--:if data.parameters:-->
+	<h3>Parameters</h3>
+	<ul class="params">
+		<!--:each param in data.parameters:-->
+		<li class="param">
+			<small class="param-types">${param.types.join(', ')}</small>
+			<span class="param-name">${param.name}</span>
+			<span class="param-desc">${textile(param.description, true)}</span>
+		</li>
+		<!--:/each:-->
+	</ul>
+	<!--:/if:-->
+	<!--:if data['return']:-->
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">${data['return'].types}</small>
+		<span class="return-desc">${textile(data['return'].description, true)}</span>
+	</div>
+	<!--:/if:-->
+	<!--:if data.see:-->
+	<p class="see">see
+		<!--:each see in data.see:-->
+		<a href="#${see}">${see}</a>
+		<!--:/each:-->
+	</p>
+	<!--:/if:-->
+	<p class="source">Automatically generated from <a href="../../src/${data.source}">${data.source}</a>
+	<!--:if data.examples:-->
+	<h3>${data.examples.length > 1 ? 'Examples' : 'Example'}</h3>
+	<ul class="examples">
+		<!--:each example in data.examples:-->
+		<li class="example">
+			<!--:if example.title:-->
+			<h4 class="example-title">${textile(example.title, true)}</h4>
+			<!--:/if:-->
+			<pre class="example-code">${example.code.replace(/\&/g,'&amp;').replace(/\</g,'&lt;').replace(/\n\t/g, '\n').replace(/\t/g, '    ')}</pre>
+		</li>
+		<!--:/each:-->
+	</ul>
+	<!--:/if:-->
+	<!--:if data.prototypes:-->
+	<h3><a name="${writeName(data)}.prototype">Prototypes</a></h3>
+	<ul class="prototypes">
+		<!--:each proto in data.prototypes:-->
+		<li class="prototype">
+			${doc(proto, false)}
+		</li>
+		<!--:/each:-->
+	</ul>
+	<!--:/if:-->
+	<!--:if data.routines:-->
+	<h3>Routines</h3>
+	<ul class="routines">
+		<!--:each routine in data.routines:-->
+		<li class="routine">
+			${doc(routine, false)}
+		</li>
+		<!--:/each:-->
+	</ul>
+	<!--:/if:-->
+	<!--:/macro:-->
+	
+	<!--:macro list(array):-->
+	<ul class="list">
+		<!--:each data in array:-->
+		<li>
+			<div class="item">
+				${doc(data, true)}
+			</div>
+			<!--:if data.properties:-->
+				${list(data.properties)}
+			<!--:/if:-->
+		</li>
+		<!--:/each:-->
+	</ul>
+	<!--:/macro:-->
+	
+	<!--:macro toc(array):-->
+	<ul>
+		<!--:each data in array:-->
+		<li>
+			<a href="#${writeName(data)}">${data.name}</a>
+			<!--:if data.routines:-->
+				${toc(data.routines)}
+			<!--:/if:-->
+			<!--:if data.properties:-->
+				${toc(data.properties)}
+			<!--:/if:-->
+		</li>
+		<!--:if data.prototypes:-->
+		<li>
+			<a href="#${writeName(data)}.prototype">prototype</a>
+			${toc(data.prototypes)}
+		</li>
+		<!--:/if:-->
+		<!--:/each:-->
+	</ul>
+	<!--:/macro:-->
+	<h1 id="project"><a name="title">${name} Documentation</a></h1>
+	<p class="desc">${description}</p>
+	<h2>Table Of Contents</h2>
+	<div class="toc">
+	${toc(tree)}
+	</div>
+	${list(tree)}
+</body>
+</html>

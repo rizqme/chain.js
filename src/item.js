@@ -56,11 +56,11 @@ $.Chain.service('item', {
 	handler: function(obj)
 	{
 		if(typeof obj == 'object')
-			return this.handleObject(obj);
+			{return this.handleObject(obj);}
 		else if(typeof obj == 'function')
-			return this.handleFunction(obj);
+			{return this.handleFunction(obj);}
 		else
-			return this.handleDefault();
+			{return this.handleDefault();}
 	},
 	
 	/**
@@ -131,9 +131,9 @@ $.Chain.service('item', {
 	handleDefault: function()
 	{
 		if(this.isActive)
-			return this.getData();
+			{return this.getData();}
 		else
-			return false;
+			{return false;}
 	},
 	
 	/**
@@ -162,11 +162,11 @@ $.Chain.service('item', {
 		
 		// Determine whether object is a jQuery object or a data object
 		if($.Chain.jobject(obj) && obj.item())
-			data = $.extend({}, obj.item());
+			{data = $.extend({}, obj.item());}
 		else if($.Chain.jobject(obj))
-			data = {}
+			{data = {};}
 		else
-			data = obj;
+			{data = obj;}
 		
 		// Call Setter
 		this.data = this.datafn.call(this.element, this.data || data, data);
@@ -176,7 +176,7 @@ $.Chain.service('item', {
 		{
 			var el = this.linkFunction();
 			if($.Chain.jobject(el) && el.length && el.item())
-				el.item(this.data);
+				{el.item(this.data);}
 		}
 	},
 	
@@ -193,9 +193,9 @@ $.Chain.service('item', {
 	dataHandler: function(oldval, newval)
 	{
 		if(arguments.length == 2)
-			return $.extend(oldval, newval);
+			{return $.extend(oldval, newval);}
 		else
-			return oldval;
+			{return oldval;}
 	},
 	
 	/**
@@ -229,7 +229,9 @@ $.Chain.service('item', {
 			// Get plugin from root and apply them
 			var plugins = this.root.chain('plugin');
 			for(var i in plugins)
+			{
 				plugins[i].apply(this.element, [this.root]);
+			}
 			
 		}
 		
@@ -249,7 +251,7 @@ $.Chain.service('item', {
 	$update: function()
 	{
 		if(this.element.chain('active') && this.isActive && !this.isBuilt && this.getData())
-			this.build();
+			{this.build();}
 		
 		return this.element;
 	},
@@ -294,7 +296,7 @@ $.Chain.service('item', {
 		
 		// Update root under certain circumtances
 		if(!$.Chain.jidentic(this.root, this.element) && !noupdate)
-			this.root.update();
+			{this.root.update();}
 	},
 	
 	/**
@@ -346,7 +348,7 @@ $.Chain.service('item', {
 	{
 		this.isBuilt = false;
 		
-		return this.element
+		return this.element;
 	},
 	
 	/**
@@ -382,11 +384,21 @@ $.Chain.service('item', {
 			this.linkFunction = function()
 			{
 				if(typeof collection == 'function')
-					try{return collection.call(self.element, self.linkElement)}catch(e){return $().eq(-1)}
+				{
+					try{
+						return collection.call(self.element, self.linkElement);
+					}catch(e){
+						return $().eq(-1);
+					}
+				}
 				else if(typeof collection == 'string')
+				{
 					return self.linkElement.items('collection', collection);
+				}
 				else
+				{
 					return $().eq(-1);
+				}
 			};
 			
 			// Watch linked element for update, and trigger update in self
@@ -394,7 +406,7 @@ $.Chain.service('item', {
 			{
 				var res = self.linkFunction();
 				if(res && res.length)
-					self.element.item(res);
+					{self.element.item(res);}
 			};
 			
 			this.linkElement.bind('update', this.linkUpdater);

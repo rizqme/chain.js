@@ -1,0 +1,7052 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Chain.js Documentation</title>
+<style type="text/css" media="screen">
+body {
+	color: #222;
+	font-family: Arial, Helvetica, sans-serif;
+	padding: 5px;
+}
+
+p.desc {
+	color: #333;
+}
+
+.toc {
+	font-size: 14px;
+	border: 1px solid #6593e9;
+	background: #cedbf3;
+}
+
+.toc a {
+	color: #294477;
+}
+
+.list, .list ul {
+	list-style: none;
+	padding: 0px;
+	margin: 0px;
+}
+
+h2 {
+	background: #0099F3;
+	padding: 5px;
+	color: white;
+}
+
+ul h2 small {
+	font-size: small;
+}
+
+a.top {
+	font-size: 12px;
+	float: right;
+	color: white;
+}
+
+.type {
+	font-weight: normal;
+	margin-right: 5px;
+}
+
+.deprecated {
+	color: red;
+	font-size: 12px;
+	font-weight: normal;
+	margin-left: 10px;
+}
+
+.prototype {
+	color: #DADADA;
+	font-weight: normal;
+	margin-right: 10px;
+}
+
+h3 {
+	font-size: 14px;
+	padding: 0px;
+	margin-bottom: 2px;
+}
+
+.param, .return {
+	background: #DFDFDF;
+	margin-bottom: 5px;
+	padding: 5px;
+}
+
+.alias, .see {
+	font-size: 14px;
+	color: #666;
+}
+
+.alias a, .see a {
+	color: #0099F3;
+}
+
+.param-types, .return-types {
+	color: green;
+	margin-right: 10px;
+}
+
+.param-name {
+	margin-right: 10px;
+}
+
+.param-desc, .return-desc {
+	color: #666;
+	font-size: small;
+}
+
+.example {
+	background: #DFDFDF;
+	padding: 5px;
+}
+
+h4 {
+	padding: 5px;
+	margin: 0px;
+	margin-bottom: 5px;
+	font-size: smaller;
+	background: #999;
+	color: #222;
+}
+
+.example-code {
+	background: #222;
+	margin: 0px;
+	padding: 5px;
+	color: white;
+}
+
+ul ul h2 {
+	background: #0088A3;
+	font-size: 16px;
+}
+
+ul ul .type {
+	margin-right: 10px;
+}
+
+ul ul .desc {
+	font-size: 14px;
+}
+
+.source, .source a {
+	font-size: 12px;
+	color: #999;
+}
+
+</style>
+</head>
+<body>
+	
+	
+	
+	
+	
+	
+	<h1 id="project"><a name="title">Chain.js Documentation</a></h1>
+	<p class="desc">jQuery Plugin for Data Binding</p>
+	<h2>Table Of Contents</h2>
+	<div class="toc">
+	
+	<ul>
+		
+		<li>
+			<a href="#update">update</a>
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#update(fn)">update(fn)</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#update(opt)">update(opt)</a>
+			
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#chain">chain</a>
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#chain(updater)">chain(updater)</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#chain(fn)">chain(fn)</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#chain('anchor')">chain('anchor')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#chain('template')">chain('template')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#chain('builder')">chain('builder')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#chain('active')">chain('active')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#chain('plugin')">chain('plugin')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#chain('clone')">chain('clone')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#chain('destroy')">chain('destroy')</a>
+			
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#item">item</a>
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#item(object)">item(object)</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#item(fn)">item(fn)</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#item()">item()</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#item('update')">item('update')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#item('replace')">item('replace')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#item('remove')">item('remove')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#item('active')">item('active')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#item('backup')">item('backup')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#item('link')">item('link')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#item('destroy')">item('destroy')</a>
+			
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items">items</a>
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#items(object)">items(object)</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items(element)">items(element)</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items(array)">items(array)</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items(number)">items(number)</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items(true)">items(true)</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('update')">items('update')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('add')">items('add')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('merge')">items('merge')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('replace')">items('replace')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('remove')">items('remove')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('reorder')">items('reorder')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('empty')">items('empty')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('data')">items('data')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('link')">items('link')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('index')">items('index')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('collection')">items('collection')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('active')">items('active')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('backup')">items('backup')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('destroy')">items('destroy')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('filter')">items('filter')</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#items('sort')">items('sort')</a>
+			
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain">jQuery.Chain</a>
+			
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#jQuery.Chain.version">version</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.tags">tags</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services">services</a>
+			
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#jQuery.Chain.services.update">update</a>
+			
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#jQuery.Chain.services.update.handler">handler</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.update.bind">bind</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.update.trigger">trigger</a>
+			
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain">chain</a>
+			
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.init">init</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.handler">handler</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.handleUpdater">handleUpdater</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.handleBuilder">handleBuilder</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.defaultBuilder">defaultBuilder</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.createBuilder">createBuilder</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.setAnchor">setAnchor</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.$anchor">$anchor</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.$template">$template</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.$builder">$builder</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.$active">$active</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.$plugin">$plugin</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.$clone">$clone</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.chain.$destroy">$destroy</a>
+			
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item">item</a>
+			
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.init">init</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.handler">handler</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.handleObject">handleObject</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.handleFunction">handleFunction</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.handleDefault">handleDefault</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.getData">getData</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.setData">setData</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.dataHandler">dataHandler</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.update">update</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.build">build</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.$update">$update</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.$replace">$replace</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.$remove">$remove</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.$active">$active</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.$root">$root</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.$backup">$backup</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.$link">$link</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.item.$destroy">$destroy</a>
+			
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items">items</a>
+			
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.collections">collections</a>
+			
+			
+				
+	<ul>
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.collections.all">all</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.collections.visible">visible</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.collections.hidden">hidden</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.collections.self">self</a>
+			
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.init">init</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.handler">handler</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.handleObject">handleObject</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.handleElement">handleElement</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.handleArray">handleArray</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.handleNumber">handleNumber</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.handleTrue">handleTrue</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.update">update</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.empty">empty</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.collection">collection</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$update">$update</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$add">$add</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$merge">$merge</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$replace">$replace</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$remove">$remove</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$reorder">$reorder</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$empty">$empty</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$data">$data</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$link">$link</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$index">$index</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$collection">$collection</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$active">$active</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$backup">$backup</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$destroy">$destroy</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.doFilter">doFilter</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$filter">$filter</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.doSort">doSort</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.services.items.$sort">$sort</a>
+			
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.service">service</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.extend">extend</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.jobject">jobject</a>
+			
+			
+		</li>
+		
+		
+		<li>
+			<a href="#jQuery.Chain.jidentic">jidentic</a>
+			
+			
+		</li>
+		
+		
+	</ul>
+	
+			
+		</li>
+		
+		
+	</ul>
+	
+	</div>
+	
+	<ul class="list">
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="update" class="name">update</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Chain Update Service</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/update.js">update.js</a>
+	
+	
+	
+	<h3>Routines</h3>
+	<ul class="routines">
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="update(fn)" class="name">update(fn)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.update.bind">jQuery.Chain.services.update.bind</a>
+		
+	</p>
+	
+	<p class="desc"><p>If you pass a function to update, it will bind it to the update event. just like jQuerys <code>click()</code> or <code>mouseover()</code>.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Listener
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.update.handler">jQuery.Chain.services.update.handler</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/update.js">update.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">// assuming #person is already chained
+$('#person').update(function{
+    alert($(this).item().name);
+});
+
+$('#person').item({name: 'Rizqi'})
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="update(opt)" class="name">update(opt)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.update.trigger">jQuery.Chain.services.update.trigger</a>
+		
+	</p>
+	
+	<p class="desc"><p>If no argument or "hard" is passed, it will update the element and trigger the update event.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">opt</span>
+			<span class="param-desc">If 'hard', it will update each of items
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.update.handler">jQuery.Chain.services.update.handler</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/update.js">update.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$('#person').update();
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+		</li>
+		
+	</ul>
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="chain" class="name">chain</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Chain Binding Service. Method to activate the chaining / element rendering service.</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	<h3>Routines</h3>
+	<ul class="routines">
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="chain(updater)" class="name">chain(updater)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.chain.handleUpdater">jQuery.Chain.services.chain.handleUpdater</a>
+		
+	</p>
+	
+	<p class="desc"><p>Updater Handler. If you pass an object to <code>chain</code>, it will treated as a updater object. The updater is a hash of selector and value string: like <code>chain({'my css selector': 'My Content String'})</code> or <code>chain({'my css selector': {attributes}})</code></p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">rules</span>
+			<span class="param-desc">Updater rules to be parsed
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	<h3>Examples</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<h4 class="example-title">Usage
+</h4>
+			
+			<pre class="example-code">$(selector)
+    .chain({
+        // Items anchor, where the Item iteration should be placed
+        anchor: anchor,
+        // If true, the default updater is overridden
+        override: false, 
+        // Use custom builder
+        builder: function(){},
+        // Update the element self
+        self: "This is my {data}",
+        // Use css selector to update child element
+        '.element.selector': "Using String Updater",
+        // Use Function as updater
+        '.element.selector': function(data, el){},
+        // Updating Attributes
+        '.element.selector': {
+            attribute1: "{attribute}",
+            className: "{className}",
+            content: "This is the {content}",
+            value: "This is the {value}"
+        }
+    });
+</pre>
+		</li>
+		
+		<li class="example">
+			
+			<h4 class="example-title">Using Default Updater
+</h4>
+			
+			<pre class="example-code">$('&lt;div>&lt;span class="name">Name&lt;/span>&lt;/div>')
+    .item({name: 'Steve Jobs'})
+    .chain()
+    .appendTo(document.body);
+</pre>
+		</li>
+		
+		<li class="example">
+			
+			<h4 class="example-title">Using Custom Updater
+</h4>
+			
+			<pre class="example-code">$('&lt;div>&lt;div class="name">&lt;span class="first">First&lt;/span> &lt;span class="last">Last&lt;/span>&lt;/div>&lt;/div>')
+    .item({first:'Steve', last:'Jobs'})
+    .chain({
+        '.name .first': {
+            style: 'color: blue;',
+            content: 'First Name: {first}'
+        },
+        '.name .last': 'Family Name: {last}'
+    })
+    .appendTo(document.body);
+</pre>
+		</li>
+		
+		<li class="example">
+			
+			<h4 class="example-title">Attach Builder Inside Updater
+</h4>
+			
+			<pre class="example-code">$('&lt;div>&lt;div class="name">Name&lt;/div>&lt;div class="address">Address&lt;/div>&lt;/div>')
+    .item({name:'Steve Jobs', address:'Cupertino'})
+    .chain({
+        builder: function(){
+            var data = this.item();
+            this.find('.name').click(function(){alert(data.name)});
+            this.find('.address').mouseout(function(){alert(data.address)});
+        },
+        '.name': '{name}',
+        '.address': '{address}'
+    })
+    .appendTo(document.body);</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="chain(fn)" class="name">chain(fn)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.chain.handleBuilder">jQuery.Chain.services.chain.handleBuilder</a>
+		
+	</p>
+	
+	<p class="desc"><p>Builder Handler. If you pass a function to <code>chain</code>, it will be handled  as <code>{builder: function}</code>, enabling you to use the default updater while customizing the events etc.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Builder Function
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.chain.handleUpdater">jQuery.Chain.services.chain.handleUpdater</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$('&lt;div>&lt;div class="name">Name&lt;/div>&lt;div class="address">Address&lt;/div>&lt;/div>')
+    .item({name:'Steve Jobs', address:'Cupertino'})
+    .chain(function(){
+        this.bind('click', function(){
+            var data = this.item();
+            alert('name:'+data.name+', address:'+data.address);
+        });
+        
+        // if you return false, default builder wont be executed
+        // You don't have to return true;
+        return true;
+    })
+    .appendTo(document.body);
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="chain('anchor')" class="name">chain('anchor')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.chain.$anchor">jQuery.Chain.services.chain.$anchor</a>
+		
+	</p>
+	
+	<p class="desc"><p>Set new Anchor and rerender if new anchor passed. Otherwise return current anchor.  If you use <code>items()</code> with <code>chain()</code>, you can use <code>chain('anchor', selector)</code> to move the element, where the items will be generated.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">anchor</span>
+			<span class="param-desc">Anchor element or selector
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">current element (if new Anchor passed), otherwise current anchor
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$('#persons').chain('anchor', '.wrapper');
+
+// Define Anchor directly while building
+$('#persons').items([...]).chain({anchor:'.wrapper', builder: ...});</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="chain('template')" class="name">chain('template')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.chain.$template">jQuery.Chain.services.chain.$template</a>
+		
+	</p>
+	
+	<p class="desc"><p>Getting/Switching Template.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Number, String</small>
+			<span class="param-name">arg</span>
+			<span class="param-desc">Argument
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$(selector).chain('template') // Returns current Template (jQuery Object)
+$(selector).chain('template', 'raw') // Returns raw HTML Templates (all)
+$(selector).chain('template', nr) // Switch to template nr (read: Number)
+$(selector).chain('template', '.tree-column') // Switch by selector</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="chain('builder')" class="name">chain('builder')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.chain.$builder">jQuery.Chain.services.chain.$builder</a>
+		
+	</p>
+	
+	<p class="desc"><p>Get/Change Builder. If you don't pass any argument, it will return the created builder.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Function, Object</small>
+			<span class="param-name">builder</span>
+			<span class="param-desc">(Optional)
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Function,Object</small>
+		<span class="return-desc">returns builder function, or jQuery Object depends on arg
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$('#el').chain('builder') // returns builder function
+$('#el').chain('builder', newBuilder) // Replace Builder</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="chain('active')" class="name">chain('active')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.chain.$active">jQuery.Chain.services.chain.$active</a>
+		
+	</p>
+	
+	<p class="desc"><p>Check status</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Boolean</small>
+		<span class="return-desc">true if active
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="chain('plugin')" class="name">chain('plugin')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.chain.$plugin">jQuery.Chain.services.chain.$plugin</a>
+		
+	</p>
+	
+	<p class="desc"><p>Add/Remove Plugins that extend builder</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">name</span>
+			<span class="param-desc">Plugin Name
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Function, Boolean</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Plugin Function / False to remove
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="chain('clone')" class="name">chain('clone')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.chain.$clone">jQuery.Chain.services.chain.$clone</a>
+		
+	</p>
+	
+	<p class="desc"><p>Clone Element unchained, with ID removed.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object containing cloned Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="chain('destroy')" class="name">chain('destroy')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.chain.$destroy">jQuery.Chain.services.chain.$destroy</a>
+		
+	</p>
+	
+	<p class="desc"><p>Destroy Chain, restore Element to previous condition.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Boolean</small>
+			<span class="param-name">nofollow</span>
+			<span class="param-desc">If true, it won't destroy nested chain elements
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+		</li>
+		
+	</ul>
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item" class="name">item</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Chain Item Service. Method to bind item to object.</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	<h3>Routines</h3>
+	<ul class="routines">
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item(object)" class="name">item(object)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.item.handleObject">jQuery.Chain.services.item.handleObject</a>
+		
+	</p>
+	
+	<p class="desc"><p>Edit/Bind Item. If no Object defined, it will bind the object to the Item, otherwise it will alter the object using the provided object.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">Object to be inserted
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.item.handler">jQuery.Chain.services.item.handler</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$('#element').item({name:'Rizqi', country:'Germany'});
+$('#element').item({country:'Indonesia'});
+$('#element').item(); // Returns {name:'Rizqi', country:'Indonesia'}
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item(fn)" class="name">item(fn)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.item.handleFunction">jQuery.Chain.services.item.handleFunction</a>
+		
+	</p>
+	
+	<p class="desc"><p>Add setter and getter to item. This function will change the way <code>item(object)</code> and <code>item()</code> works.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Getter&Setter Function
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$(element).item(function(oldval, newval){
+    //setter
+    if(newval)
+        return $.extend(oldval, newval);
+    //getter
+else
+        return oldval;
+})</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item()" class="name">item()</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.item.handleDefault">jQuery.Chain.services.item.handleDefault</a>
+		
+	</p>
+	
+	<p class="desc"><p>Get Data if no argument passed.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object,Boolean</small>
+		<span class="return-desc">Returns Data Object if exist, otherwise false
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item('update')" class="name">item('update')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.item.$update">jQuery.Chain.services.item.$update</a>
+		
+	</p>
+	
+	<p class="desc"><p>Item Updater, called within <code>$(element).update()</code></p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item('replace')" class="name">item('replace')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.item.$replace">jQuery.Chain.services.item.$replace</a>
+		
+	</p>
+	
+	<p class="desc"><p>Replace Data with new data</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">Data Object
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$(element).item('replace', data);</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item('remove')" class="name">item('remove')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.item.$remove">jQuery.Chain.services.item.$remove</a>
+		
+	</p>
+	
+	<p class="desc"><p>Remove Item And destroy it.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Boolean</small>
+			<span class="param-name">noupdate</span>
+			<span class="param-desc">If true it won't update the root element
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item('active')" class="name">item('active')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.item.$active">jQuery.Chain.services.item.$active</a>
+		
+	</p>
+	
+	<p class="desc"><p>Check Status of <code>item</code></p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Boolean</small>
+		<span class="return-desc">Status
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item('backup')" class="name">item('backup')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.item.$backup">jQuery.Chain.services.item.$backup</a>
+		
+	</p>
+	
+	<p class="desc"><p>Backup Item to the state before being built.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item('link')" class="name">item('link')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.item.$link">jQuery.Chain.services.item.$link</a>
+		
+	</p>
+	
+	<p class="desc"><p>Bind Item to other (chained) element. If one of them is updated, the linked element will be updated.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">element</span>
+			<span class="param-desc">element/selector to be linked with
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">collection</span>
+			<span class="param-desc">Collection to be linked with (has to be <code>"self"</code> if linked to item)
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.items.collection">jQuery.Chain.services.items.collection</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="item('destroy')" class="name">item('destroy')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.item.$destroy">jQuery.Chain.services.item.$destroy</a>
+		
+	</p>
+	
+	<p class="desc"><p>Destroy item service.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+		</li>
+		
+	</ul>
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items" class="name">items</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Chain Items Service. Method to bind items to object.</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	<h3>Routines</h3>
+	<ul class="routines">
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items(object)" class="name">items(object)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.handleObject">jQuery.Chain.services.items.handleObject</a>
+		
+	</p>
+	
+	<p class="desc"><p>If a Data Object is given, it will return the item element containing the object if it exists, otherwise empty.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">Data Object
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items(element)" class="name">items(element)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.handleElement">jQuery.Chain.services.items.handleElement</a>
+		
+	</p>
+	
+	<p class="desc"><p>If a jQuery Element is given, it will return itself if it is part of the items, otherwise empty jQuery object.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">jQuery Object
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items(array)" class="name">items(array)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.handleArray">jQuery.Chain.services.items.handleArray</a>
+		
+	</p>
+	
+	<p class="desc"><p>If array is given, it will merge it to current items</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Array</small>
+			<span class="param-name">array</span>
+			<span class="param-desc">Array of Data
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items(number)" class="name">items(number)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.handleNumber">jQuery.Chain.services.items.handleNumber</a>
+		
+	</p>
+	
+	<p class="desc"><p>If number is given, it will get the object with the current number. Use -1 to get the last number.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Number</small>
+			<span class="param-name">number</span>
+			<span class="param-desc">Index
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items(true)" class="name">items(true)</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.handleTrue">jQuery.Chain.services.items.handleTrue</a>
+		
+	</p>
+	
+	<p class="desc"><p>If <code>true</code> is given, it will get all items including the hidden one.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.items.collections.all">jQuery.Chain.services.items.collections.all</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('update')" class="name">items('update')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$update">jQuery.Chain.services.items.$update</a>
+		
+	</p>
+	
+	<p class="desc"><p>Items Updater, called by <code>$(element).update()</code></p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('add')" class="name">items('add')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$add">jQuery.Chain.services.items.$add</a>
+		
+	</p>
+	
+	<p class="desc"><p>Add item(s). use <code>items('add', 'shift', item)</code> to add item at the top</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">item</span>
+			<span class="param-desc">
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('merge')" class="name">items('merge')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$merge">jQuery.Chain.services.items.$merge</a>
+		
+	</p>
+	
+	<p class="desc"><p>Merge items with array of item data</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">cmd</span>
+			<span class="param-desc">Switch for push/shift
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Array</small>
+			<span class="param-name">items</span>
+			<span class="param-desc">Item Data
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('replace')" class="name">items('replace')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$replace">jQuery.Chain.services.items.$replace</a>
+		
+	</p>
+	
+	<p class="desc"><p>Replace items with new items array</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">cmd</span>
+			<span class="param-desc">Switch for push/shift
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Array</small>
+			<span class="param-name">items</span>
+			<span class="param-desc">Item Data
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('remove')" class="name">items('remove')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$remove">jQuery.Chain.services.items.$remove</a>
+		
+	</p>
+	
+	<p class="desc"><p>Remove item</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object, Number</small>
+			<span class="param-name">item</span>
+			<span class="param-desc">
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('reorder')" class="name">items('reorder')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$reorder">jQuery.Chain.services.items.$reorder</a>
+		
+	</p>
+	
+	<p class="desc"><p>Reorder Item</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">item1</span>
+			<span class="param-desc">Item 1
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">item2</span>
+			<span class="param-desc">Item 2
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('empty')" class="name">items('empty')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$empty">jQuery.Chain.services.items.$empty</a>
+		
+	</p>
+	
+	<p class="desc"><p>Clear all items</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('data')" class="name">items('data')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$data">jQuery.Chain.services.items.$data</a>
+		
+	</p>
+	
+	<p class="desc"><p>Like <code>items()</code> but returns array of data instead of the jQuery object.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Array</small>
+		<span class="return-desc">list of data
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('link')" class="name">items('link')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$link">jQuery.Chain.services.items.$link</a>
+		
+	</p>
+	
+	<p class="desc"><p>Bind Items to other (chained) element. If one of them is updated, the linked element will be updated.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">element</span>
+			<span class="param-desc">element/selector to be linked with
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">collection</span>
+			<span class="param-desc">Collection to be linked with (has to be <code>"self"</code> if linked to item)
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.items.collection">jQuery.Chain.services.items.collection</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('index')" class="name">items('index')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$index">jQuery.Chain.services.items.$index</a>
+		
+	</p>
+	
+	<p class="desc"><p>Get index of an Item</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">item</span>
+			<span class="param-desc">
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Number</small>
+		<span class="return-desc">index
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('collection')" class="name">items('collection')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$collection">jQuery.Chain.services.items.$collection</a>
+		
+	</p>
+	
+	<p class="desc"><p>Get collection of items. Define a collection by adding a function argument</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">col</span>
+			<span class="param-desc">Collection name
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Create a collection function
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('active')" class="name">items('active')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$active">jQuery.Chain.services.items.$active</a>
+		
+	</p>
+	
+	<p class="desc"><p>Check Status of <code>items</code></p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Boolean</small>
+		<span class="return-desc">Status
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('backup')" class="name">items('backup')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$backup">jQuery.Chain.services.items.$backup</a>
+		
+	</p>
+	
+	<p class="desc"><p>Backup Item to the state before being built.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('destroy')" class="name">items('destroy')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$destroy">jQuery.Chain.services.items.$destroy</a>
+		
+	</p>
+	
+	<p class="desc"><p>Destroy items service.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('filter')" class="name">items('filter')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$filter">jQuery.Chain.services.items.$filter</a>
+		
+	</p>
+	
+	<p class="desc"><p>Filter items by criteria. Filtered items will be hidden.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String, RegExp</small>
+			<span class="param-name">text</span>
+			<span class="param-desc">Search keyword
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">String, Array</small>
+			<span class="param-name">properties</span>
+			<span class="param-desc">Search properties
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+		<li class="routine">
+			
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="items('sort')" class="name">items('sort')</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#jQuery.Chain.services.items.$sort">jQuery.Chain.services.items.$sort</a>
+		
+	</p>
+	
+	<p class="desc"><p>Sort items by property.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">name</span>
+			<span class="param-desc">sorting property
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">opt</span>
+			<span class="param-desc">{toggle:true/false, desc:true/false, type:'number/default'}
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+		</li>
+		
+	</ul>
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Namespace</small>
+		
+		<a name="jQuery.Chain" class="name">jQuery.Chain</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Chain Namespace</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/core.js">core.js</a>
+	
+	
+	
+	
+			</div>
+			
+				
+	<ul class="list">
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">String</small>
+		
+		<a name="jQuery.Chain.version" class="name">jQuery.Chain.version</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Version Number</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/core.js">core.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Array</small>
+		
+		<a name="jQuery.Chain.tags" class="name">jQuery.Chain.tags</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Tag for use in <code>jQuery.Chain.parse</code> (which is used in CustomUpdater). It is can be altered.</p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.parse">jQuery.Chain.parse</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/core.js">core.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Namespace</small>
+		
+		<a name="jQuery.Chain.services" class="name">jQuery.Chain.services</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Namespace containing all defined services.</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/core.js">core.js</a>
+	
+	
+	
+	
+			</div>
+			
+				
+	<ul class="list">
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Namespace</small>
+		
+		<a name="jQuery.Chain.services.update" class="name">jQuery.Chain.services.update</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Chain Update Service Object - Providing methods of <code>update</code>. All method listed here can only be used internally using <code>jQuery.Chain.service</code> or <code>jQuery.Chain.extend</code></p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/update.js">update.js</a>
+	
+	
+	
+	
+			</div>
+			
+				
+	<ul class="list">
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.update.handler" class="name">jQuery.Chain.services.update.handler</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Default Handler</p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/update.js">update.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.update.bind" class="name">jQuery.Chain.services.update.bind</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#update(fn)">update(fn)</a>
+		
+	</p>
+	
+	<p class="desc"><p>If you pass a function to update, it will bind it to the update event. just like jQuerys <code>click()</code> or <code>mouseover()</code>.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Listener
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.update.handler">jQuery.Chain.services.update.handler</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/update.js">update.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">// assuming #person is already chained
+$('#person').update(function{
+    alert($(this).item().name);
+});
+
+$('#person').item({name: 'Rizqi'})
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.update.trigger" class="name">jQuery.Chain.services.update.trigger</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#update(opt)">update(opt)</a>
+		
+	</p>
+	
+	<p class="desc"><p>If no argument or "hard" is passed, it will update the element and trigger the update event.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">opt</span>
+			<span class="param-desc">If 'hard', it will update each of items
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.update.handler">jQuery.Chain.services.update.handler</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/update.js">update.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$('#person').update();
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+	</ul>
+	
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Namespace</small>
+		
+		<a name="jQuery.Chain.services.chain" class="name">jQuery.Chain.services.chain</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Chain Binding Service Object - Providing methods of <code>chain</code>. All method listed here can only be used internally using <code>jQuery.Chain.service</code> or <code>jQuery.Chain.extend</code></p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+			</div>
+			
+				
+	<ul class="list">
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.init" class="name">jQuery.Chain.services.chain.init</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Initializer. Executed once at the first time <code>chain</code> invoked.</p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.handler" class="name">jQuery.Chain.services.chain.handler</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Default handler.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">Object to be handled
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.handleUpdater" class="name">jQuery.Chain.services.chain.handleUpdater</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#chain(updater)">chain(updater)</a>
+		
+	</p>
+	
+	<p class="desc"><p>Updater Handler. If you pass an object to <code>chain</code>, it will treated as a updater object. The updater is a hash of selector and value string: like <code>chain({'my css selector': 'My Content String'})</code> or <code>chain({'my css selector': {attributes}})</code></p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">rules</span>
+			<span class="param-desc">Updater rules to be parsed
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	<h3>Examples</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<h4 class="example-title">Usage
+</h4>
+			
+			<pre class="example-code">$(selector)
+    .chain({
+        // Items anchor, where the Item iteration should be placed
+        anchor: anchor,
+        // If true, the default updater is overridden
+        override: false, 
+        // Use custom builder
+        builder: function(){},
+        // Update the element self
+        self: "This is my {data}",
+        // Use css selector to update child element
+        '.element.selector': "Using String Updater",
+        // Use Function as updater
+        '.element.selector': function(data, el){},
+        // Updating Attributes
+        '.element.selector': {
+            attribute1: "{attribute}",
+            className: "{className}",
+            content: "This is the {content}",
+            value: "This is the {value}"
+        }
+    });
+</pre>
+		</li>
+		
+		<li class="example">
+			
+			<h4 class="example-title">Using Default Updater
+</h4>
+			
+			<pre class="example-code">$('&lt;div>&lt;span class="name">Name&lt;/span>&lt;/div>')
+    .item({name: 'Steve Jobs'})
+    .chain()
+    .appendTo(document.body);
+</pre>
+		</li>
+		
+		<li class="example">
+			
+			<h4 class="example-title">Using Custom Updater
+</h4>
+			
+			<pre class="example-code">$('&lt;div>&lt;div class="name">&lt;span class="first">First&lt;/span> &lt;span class="last">Last&lt;/span>&lt;/div>&lt;/div>')
+    .item({first:'Steve', last:'Jobs'})
+    .chain({
+        '.name .first': {
+            style: 'color: blue;',
+            content: 'First Name: {first}'
+        },
+        '.name .last': 'Family Name: {last}'
+    })
+    .appendTo(document.body);
+</pre>
+		</li>
+		
+		<li class="example">
+			
+			<h4 class="example-title">Attach Builder Inside Updater
+</h4>
+			
+			<pre class="example-code">$('&lt;div>&lt;div class="name">Name&lt;/div>&lt;div class="address">Address&lt;/div>&lt;/div>')
+    .item({name:'Steve Jobs', address:'Cupertino'})
+    .chain({
+        builder: function(){
+            var data = this.item();
+            this.find('.name').click(function(){alert(data.name)});
+            this.find('.address').mouseout(function(){alert(data.address)});
+        },
+        '.name': '{name}',
+        '.address': '{address}'
+    })
+    .appendTo(document.body);</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.handleBuilder" class="name">jQuery.Chain.services.chain.handleBuilder</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#chain(fn)">chain(fn)</a>
+		
+	</p>
+	
+	<p class="desc"><p>Builder Handler. If you pass a function to <code>chain</code>, it will be handled  as <code>{builder: function}</code>, enabling you to use the default updater while customizing the events etc.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Builder Function
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.chain.handleUpdater">jQuery.Chain.services.chain.handleUpdater</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$('&lt;div>&lt;div class="name">Name&lt;/div>&lt;div class="address">Address&lt;/div>&lt;/div>')
+    .item({name:'Steve Jobs', address:'Cupertino'})
+    .chain(function(){
+        this.bind('click', function(){
+            var data = this.item();
+            alert('name:'+data.name+', address:'+data.address);
+        });
+        
+        // if you return false, default builder wont be executed
+        // You don't have to return true;
+        return true;
+    })
+    .appendTo(document.body);
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.defaultBuilder" class="name">jQuery.Chain.services.chain.defaultBuilder</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Default Builder - Automatic Data filler</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">builder</span>
+			<span class="param-desc">Builder Function
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">root</span>
+			<span class="param-desc">Root Element Object
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.chain.createBuilder">jQuery.Chain.services.chain.createBuilder</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.createBuilder" class="name">jQuery.Chain.services.chain.createBuilder</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Builder Generator (Wrapper).</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">builder</span>
+			<span class="param-desc">Builder
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Function</small>
+		<span class="return-desc">Wrapped Builder
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.chain.defaultBuilder;">jQuery.Chain.services.chain.defaultBuilder;</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.setAnchor" class="name">jQuery.Chain.services.chain.setAnchor</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Set Anchor (Container for <code>items</code> to be populated, default: <code>this.element</code>)</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">anchor</span>
+			<span class="param-desc">Anchor element
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.chain.$anchor">jQuery.Chain.services.chain.$anchor</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.$anchor" class="name">jQuery.Chain.services.chain.$anchor</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#chain('anchor')">chain('anchor')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Set new Anchor and rerender if new anchor passed. Otherwise return current anchor.  If you use <code>items()</code> with <code>chain()</code>, you can use <code>chain('anchor', selector)</code> to move the element, where the items will be generated.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">anchor</span>
+			<span class="param-desc">Anchor element or selector
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">current element (if new Anchor passed), otherwise current anchor
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$('#persons').chain('anchor', '.wrapper');
+
+// Define Anchor directly while building
+$('#persons').items([...]).chain({anchor:'.wrapper', builder: ...});</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.$template" class="name">jQuery.Chain.services.chain.$template</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#chain('template')">chain('template')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Getting/Switching Template.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Number, String</small>
+			<span class="param-name">arg</span>
+			<span class="param-desc">Argument
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$(selector).chain('template') // Returns current Template (jQuery Object)
+$(selector).chain('template', 'raw') // Returns raw HTML Templates (all)
+$(selector).chain('template', nr) // Switch to template nr (read: Number)
+$(selector).chain('template', '.tree-column') // Switch by selector</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.$builder" class="name">jQuery.Chain.services.chain.$builder</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#chain('builder')">chain('builder')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Get/Change Builder. If you don't pass any argument, it will return the created builder.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Function, Object</small>
+			<span class="param-name">builder</span>
+			<span class="param-desc">(Optional)
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Function,Object</small>
+		<span class="return-desc">returns builder function, or jQuery Object depends on arg
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$('#el').chain('builder') // returns builder function
+$('#el').chain('builder', newBuilder) // Replace Builder</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.$active" class="name">jQuery.Chain.services.chain.$active</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#chain('active')">chain('active')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Check status</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Boolean</small>
+		<span class="return-desc">true if active
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.$plugin" class="name">jQuery.Chain.services.chain.$plugin</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#chain('plugin')">chain('plugin')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Add/Remove Plugins that extend builder</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">name</span>
+			<span class="param-desc">Plugin Name
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Function, Boolean</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Plugin Function / False to remove
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.$clone" class="name">jQuery.Chain.services.chain.$clone</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#chain('clone')">chain('clone')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Clone Element unchained, with ID removed.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object containing cloned Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.chain.$destroy" class="name">jQuery.Chain.services.chain.$destroy</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#chain('destroy')">chain('destroy')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Destroy Chain, restore Element to previous condition.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Boolean</small>
+			<span class="param-name">nofollow</span>
+			<span class="param-desc">If true, it won't destroy nested chain elements
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/chain.js">chain.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+	</ul>
+	
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Namespace</small>
+		
+		<a name="jQuery.Chain.services.item" class="name">jQuery.Chain.services.item</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Chain Item Manager - Providing methods of <code>item</code>. All method listed here can only be used internally using <code>jQuery.Chain.service</code> or <code>jQuery.Chain.extend</code></p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+				
+	<ul class="list">
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.init" class="name">jQuery.Chain.services.item.init</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Initializer. Executed once at the first time <code>item</code> invoked.</p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.handler" class="name">jQuery.Chain.services.item.handler</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Default handler.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">Object to be handled
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.handleObject" class="name">jQuery.Chain.services.item.handleObject</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item(object)">item(object)</a>
+		
+	</p>
+	
+	<p class="desc"><p>Edit/Bind Item. If no Object defined, it will bind the object to the Item, otherwise it will alter the object using the provided object.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">Object to be inserted
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.item.handler">jQuery.Chain.services.item.handler</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$('#element').item({name:'Rizqi', country:'Germany'});
+$('#element').item({country:'Indonesia'});
+$('#element').item(); // Returns {name:'Rizqi', country:'Indonesia'}
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.handleFunction" class="name">jQuery.Chain.services.item.handleFunction</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item(fn)">item(fn)</a>
+		
+	</p>
+	
+	<p class="desc"><p>Add setter and getter to item. This function will change the way <code>item(object)</code> and <code>item()</code> works.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Getter&Setter Function
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$(element).item(function(oldval, newval){
+    //setter
+    if(newval)
+        return $.extend(oldval, newval);
+    //getter
+else
+        return oldval;
+})</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.handleDefault" class="name">jQuery.Chain.services.item.handleDefault</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item()">item()</a>
+		
+	</p>
+	
+	<p class="desc"><p>Get Data if no argument passed.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object,Boolean</small>
+		<span class="return-desc">Returns Data Object if exist, otherwise false
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.getData" class="name">jQuery.Chain.services.item.getData</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Data Getter Wrapper Function</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">data
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.setData" class="name">jQuery.Chain.services.item.setData</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Data Setter Wrapper Function</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.dataHandler" class="name">jQuery.Chain.services.item.dataHandler</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Default Getter/Setter</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">oldval</span>
+			<span class="param-desc">Old value
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">newval</span>
+			<span class="param-desc">New Value
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">returns data value
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.update" class="name">jQuery.Chain.services.item.update</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Update element. Wrapper for <code>jQuery.Chain.services.item.element.update</code></p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.build" class="name">jQuery.Chain.services.item.build</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Build item, apply builder and plugins</p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.item.$update">jQuery.Chain.services.item.$update</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.$update" class="name">jQuery.Chain.services.item.$update</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item('update')">item('update')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Item Updater, called within <code>$(element).update()</code></p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.$replace" class="name">jQuery.Chain.services.item.$replace</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item('replace')">item('replace')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Replace Data with new data</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">Data Object
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<pre class="example-code">$(element).item('replace', data);</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.$remove" class="name">jQuery.Chain.services.item.$remove</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item('remove')">item('remove')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Remove Item And destroy it.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Boolean</small>
+			<span class="param-name">noupdate</span>
+			<span class="param-desc">If true it won't update the root element
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.$active" class="name">jQuery.Chain.services.item.$active</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item('active')">item('active')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Check Status of <code>item</code></p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Boolean</small>
+		<span class="return-desc">Status
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.$root" class="name">jQuery.Chain.services.item.$root</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item('root');">item('root');</a>
+		
+	</p>
+	
+	<p class="desc"><p>Get/Set Root element.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">root</span>
+			<span class="param-desc">New Root element
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">If a new root passed, it will be item Element. Otherwise current root.
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.$backup" class="name">jQuery.Chain.services.item.$backup</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item('backup')">item('backup')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Backup Item to the state before being built.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.$link" class="name">jQuery.Chain.services.item.$link</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item('link')">item('link')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Bind Item to other (chained) element. If one of them is updated, the linked element will be updated.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">element</span>
+			<span class="param-desc">element/selector to be linked with
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">collection</span>
+			<span class="param-desc">Collection to be linked with (has to be <code>"self"</code> if linked to item)
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.items.collection">jQuery.Chain.services.items.collection</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.item.$destroy" class="name">jQuery.Chain.services.item.$destroy</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#item('destroy')">item('destroy')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Destroy item service.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/item.js">item.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+	</ul>
+	
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Namespace</small>
+		
+		<a name="jQuery.Chain.services.items" class="name">jQuery.Chain.services.items</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Chain Items Manager - Providing methods of <code>items</code>. All method listed here can only be used internally using <code>jQuery.Chain.service</code> or <code>jQuery.Chain.extend</code></p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+				
+	<ul class="list">
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Namespace</small>
+		
+		<a name="jQuery.Chain.services.items.collections" class="name">jQuery.Chain.services.items.collections</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Collection of Function for getting items</p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.items.collection">jQuery.Chain.services.items.collection</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+				
+	<ul class="list">
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.collections.all" class="name">jQuery.Chain.services.items.collections.all</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Get all items, including hidden</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object containing items
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.collections.visible" class="name">jQuery.Chain.services.items.collections.visible</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Get all visible items</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object containing items
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.collections.hidden" class="name">jQuery.Chain.services.items.collections.hidden</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Get all hidden items</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object containing items
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.collections.self" class="name">jQuery.Chain.services.items.collections.self</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Get self</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object of the element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+	</ul>
+	
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.init" class="name">jQuery.Chain.services.items.init</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Initializer. Executed once at the first time <code>items</code> invoked.</p>
+</p>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.handler" class="name">jQuery.Chain.services.items.handler</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Default handler.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">Object to be handled
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.handleObject" class="name">jQuery.Chain.services.items.handleObject</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items(object)">items(object)</a>
+		
+	</p>
+	
+	<p class="desc"><p>If a Data Object is given, it will return the item element containing the object if it exists, otherwise empty.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">Data Object
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.handleElement" class="name">jQuery.Chain.services.items.handleElement</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items(element)">items(element)</a>
+		
+	</p>
+	
+	<p class="desc"><p>If a jQuery Element is given, it will return itself if it is part of the items, otherwise empty jQuery object.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">jQuery Object
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.handleArray" class="name">jQuery.Chain.services.items.handleArray</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items(array)">items(array)</a>
+		
+	</p>
+	
+	<p class="desc"><p>If array is given, it will merge it to current items</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Array</small>
+			<span class="param-name">array</span>
+			<span class="param-desc">Array of Data
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.handleNumber" class="name">jQuery.Chain.services.items.handleNumber</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items(number)">items(number)</a>
+		
+	</p>
+	
+	<p class="desc"><p>If number is given, it will get the object with the current number. Use -1 to get the last number.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Number</small>
+			<span class="param-name">number</span>
+			<span class="param-desc">Index
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.handleTrue" class="name">jQuery.Chain.services.items.handleTrue</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items(true)">items(true)</a>
+		
+	</p>
+	
+	<p class="desc"><p>If <code>true</code> is given, it will get all items including the hidden one.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.items.collections.all">jQuery.Chain.services.items.collections.all</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.update" class="name">jQuery.Chain.services.items.update</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Update element</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.empty" class="name">jQuery.Chain.services.items.empty</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Clear all items</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.collection" class="name">jQuery.Chain.services.items.collection</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Get collection of items. Define a collection by adding a function argument</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">col</span>
+			<span class="param-desc">Collection name
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Create a collection function
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$update" class="name">jQuery.Chain.services.items.$update</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('update')">items('update')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Items Updater, called by <code>$(element).update()</code></p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$add" class="name">jQuery.Chain.services.items.$add</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('add')">items('add')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Add item(s). use <code>items('add', 'shift', item)</code> to add item at the top</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">item</span>
+			<span class="param-desc">
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$merge" class="name">jQuery.Chain.services.items.$merge</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('merge')">items('merge')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Merge items with array of item data</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">cmd</span>
+			<span class="param-desc">Switch for push/shift
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Array</small>
+			<span class="param-name">items</span>
+			<span class="param-desc">Item Data
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$replace" class="name">jQuery.Chain.services.items.$replace</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('replace')">items('replace')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Replace items with new items array</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">cmd</span>
+			<span class="param-desc">Switch for push/shift
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Array</small>
+			<span class="param-name">items</span>
+			<span class="param-desc">Item Data
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$remove" class="name">jQuery.Chain.services.items.$remove</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('remove')">items('remove')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Remove item</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object, Number</small>
+			<span class="param-name">item</span>
+			<span class="param-desc">
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$reorder" class="name">jQuery.Chain.services.items.$reorder</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('reorder')">items('reorder')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Reorder Item</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">item1</span>
+			<span class="param-desc">Item 1
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">item2</span>
+			<span class="param-desc">Item 2
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$empty" class="name">jQuery.Chain.services.items.$empty</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('empty')">items('empty')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Clear all items</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$data" class="name">jQuery.Chain.services.items.$data</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('data')">items('data')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Like <code>items()</code> but returns array of data instead of the jQuery object.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Array</small>
+		<span class="return-desc">list of data
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$link" class="name">jQuery.Chain.services.items.$link</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('link')">items('link')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Bind Items to other (chained) element. If one of them is updated, the linked element will be updated.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">element</span>
+			<span class="param-desc">element/selector to be linked with
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">collection</span>
+			<span class="param-desc">Collection to be linked with (has to be <code>"self"</code> if linked to item)
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.services.items.collection">jQuery.Chain.services.items.collection</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$index" class="name">jQuery.Chain.services.items.$index</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('index')">items('index')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Get index of an Item</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">item</span>
+			<span class="param-desc">
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Number</small>
+		<span class="return-desc">index
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$collection" class="name">jQuery.Chain.services.items.$collection</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('collection')">items('collection')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Get collection of items. Define a collection by adding a function argument</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">col</span>
+			<span class="param-desc">Collection name
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Function</small>
+			<span class="param-name">fn</span>
+			<span class="param-desc">Create a collection function
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$active" class="name">jQuery.Chain.services.items.$active</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('active')">items('active')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Check Status of <code>items</code></p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Boolean</small>
+		<span class="return-desc">Status
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$backup" class="name">jQuery.Chain.services.items.$backup</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('backup')">items('backup')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Backup Item to the state before being built.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$destroy" class="name">jQuery.Chain.services.items.$destroy</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('destroy')">items('destroy')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Destroy items service.</p>
+</p>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Element
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.doFilter" class="name">jQuery.Chain.services.items.doFilter</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Filtering subroutine</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$filter" class="name">jQuery.Chain.services.items.$filter</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('filter')">items('filter')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Filter items by criteria. Filtered items will be hidden.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String, RegExp</small>
+			<span class="param-name">text</span>
+			<span class="param-desc">Search keyword
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">String, Array</small>
+			<span class="param-name">properties</span>
+			<span class="param-desc">Search properties
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.doSort" class="name">jQuery.Chain.services.items.doSort</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Sorting subroutine</p>
+</p>
+	
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.services.items.$sort" class="name">jQuery.Chain.services.items.$sort</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="alias">Also known as
+		
+		<a href="#items('sort')">items('sort')</a>
+		
+	</p>
+	
+	<p class="desc"><p>Sort items by property.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">name</span>
+			<span class="param-desc">sorting property
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">opt</span>
+			<span class="param-desc">{toggle:true/false, desc:true/false, type:'number/default'}
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Object</small>
+		<span class="return-desc">jQuery Object
+</span>
+	</div>
+	
+	
+	<p class="source">Automatically generated from <a href="../../src/items.js">items.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+	</ul>
+	
+			
+		</li>
+		
+	</ul>
+	
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.service" class="name">jQuery.Chain.service</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Register a service to the service manager.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">name</span>
+			<span class="param-desc">Service Name
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">proto</span>
+			<span class="param-desc">Service Object Prototype
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.extend">jQuery.Chain.extend</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/core.js">core.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<h4 class="example-title">Create a Custom Service
+</h4>
+			
+			<pre class="example-code">$.Chain.service('test', {
+    // Default command handler
+    handler: function(option)
+    {
+        // do something
+    },
+    // $(selector).test('what', somearg)
+    $what: function(somearg)
+    {
+        // do something
+    }
+});
+
+$('#element').test();
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.extend" class="name">jQuery.Chain.extend</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Extends service functionalities.</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">String</small>
+			<span class="param-name">name</span>
+			<span class="param-desc">Service Name
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">proto</span>
+			<span class="param-desc">Service Object Prototype
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.service">jQuery.Chain.service</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/core.js">core.js</a>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.jobject" class="name">jQuery.Chain.jobject</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Check whether it is a jQuery Object</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">obj</span>
+			<span class="param-desc">Object to be checked
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Boolean</small>
+		<span class="return-desc">True or False
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.jindentic">jQuery.Chain.jindentic</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/core.js">core.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<h4 class="example-title">Using <code>jobject</code>
+</h4>
+			
+			<pre class="example-code">$.Chain.jobject($()) // returns true
+$.Chain.jobject("test") // returns false
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+		<li>
+			<div class="item">
+				
+	<h2>
+		<small class="type">Method</small>
+		
+		<a name="jQuery.Chain.jidentic" class="name">jQuery.Chain.jidentic</a>
+		
+		<a class="top" href="#title">top</a>
+	</h2>
+	
+	<p class="desc"><p>Check whether two jQuery Collection identic</p>
+</p>
+	
+	<h3>Parameters</h3>
+	<ul class="params">
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">j1</span>
+			<span class="param-desc">jQuery Object
+</span>
+		</li>
+		
+		<li class="param">
+			<small class="param-types">Object</small>
+			<span class="param-name">j2</span>
+			<span class="param-desc">jQuery Object
+</span>
+		</li>
+		
+	</ul>
+	
+	
+	<h3>Return</h3>
+	<div class="return">
+		<small class="return-types">Boolean</small>
+		<span class="return-desc">True or False
+</span>
+	</div>
+	
+	
+	<p class="see">see
+		
+		<a href="#jQuery.Chain.jobject">jQuery.Chain.jobject</a>
+		
+	</p>
+	
+	<p class="source">Automatically generated from <a href="../../src/core.js">core.js</a>
+	
+	<h3>Example</h3>
+	<ul class="examples">
+		
+		<li class="example">
+			
+			<h4 class="example-title">Using <code>jidentic</code>
+</h4>
+			
+			<pre class="example-code">a = $('div');
+b = $('div');
+c = $('div.test');
+
+(a == b) //returns false
+
+$.Chain.jidentic(a, b) // returns true
+$.Chain.jidentic(a, c) // returns false
+</pre>
+		</li>
+		
+	</ul>
+	
+	
+	
+	
+			</div>
+			
+		</li>
+		
+	</ul>
+	
+			
+		</li>
+		
+	</ul>
+	
+</body>
+</html>

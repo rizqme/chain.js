@@ -70,7 +70,8 @@ $.Chain =
 		// Creating jQuery fn module with the service
 		$.fn[name] = function(options)
 		{
-			if(!this.length) return this;
+			if(!this.length)
+				{return this;}
 			
 			// Create Chain instance
 			var instance = this.data('chain-'+name);
@@ -83,32 +84,32 @@ $.Chain =
 			{
 			  // Return immediately if destroyed is called before Instance is created
 				if(options == 'destroy') 
-					return this;
+					{return this;}
 				// Create Instance
 				instance = $.extend({element: this}, $.Chain.services[name]);
 				this.data('chain-'+name, instance);
 				// Initialize if possible
 				if(instance.init)
-					instance.init();
+					{instance.init();}
 			}
 			
 			var result;
 			
 			// Check whether to execute a command
 			if(typeof options == 'string' && instance['$'+options])
-				result = instance['$'+options].apply(instance, args);
+				{result = instance['$'+options].apply(instance, args);}
 			
 			// Otherwise try to execute default handler
 			else if(instance['handler'])
-				result = instance['handler'].apply(instance, [options].concat(args));
+				{result = instance['handler'].apply(instance, [options].concat(args));}
 			
 			// Otherwise do nothing
 			else
-				result = this;
+				{result = this;}
 			
 			// Remove instance on destroy
 			if(options == 'destroy')
-				this.removeData('chain-'+name);
+				{this.removeData('chain-'+name);}
 			
 			return result;
 		};
@@ -127,7 +128,7 @@ $.Chain =
 	extend: function(name, proto)
 	{
 		if(this.services[name])
-			this.services[name] = $.extend(this.services[name], proto);
+			{this.services[name] = $.extend(this.services[name], proto);}
 	},
 	
 	/**
@@ -175,14 +176,16 @@ $.Chain =
 	jidentic: function(j1, j2)
 	{
 		if(!j1 || !j2 || j1.length != j2.length)
-			return false;
+			{return false;}
 		
-		a1 = j1.get();
-		a2 = j2.get();
+		var a1 = j1.get();
+		var a2 = j2.get();
 		
 		for(var i=0; i<a1.length; i++)
+		{
 			if(a1[i] != a2[i])
-				return false;
+				{return false;}
+		}
 		
 		return true;
 		
@@ -203,7 +206,7 @@ $.Chain =
 	 * 
 	 * @see jQuery.Chain.tag
 	 */ 
-	parse: (function()
+	parse: function()
 	{
 		var $this = {};
 		// Function Closure
@@ -247,41 +250,45 @@ $.Chain =
 				closer = opener + text.substring(opener).indexOf(tag[1]);
 		
 				// If opener tag exists, otherwise there are no tags anymore
-				if(opener != -1){
+				if(opener != -1)
+				{
 					// Handle escape. Tag can be escaped with '\\'.
 					// If tag is escaped. it will be handled as a normal text
 					// Otherwise it will be handled as a script
-					if(text[opener-1] == '\\'){
+					if(text[opener-1] == '\\')
+					{
 						closer2 = opener+tag[0].length + text.substring(opener+tag[0].length).indexOf(tag[0]);
 						if(closer2 != opener+tag[0].length-1 && text[closer2-1] == '\\')
-							closer2 = closer2-1;
+							{closer2 = closer2-1;}
 						else if(closer2 == opener+tag[0].length-1)
-							closer2 = text.length;
+							{closer2 = text.length;}
 				
 						result.push($this.textPrint(text.substring(0, opener-1)));
 						result.push($this.textPrint(text.substring(opener, closer2)));
 					}
-					else{
+					else
+					{
 						closer2 = null;
 						if(closer == opener-1)
-							closer = text.length;
+							{closer = text.length;}
 				
 						result.push($this.textPrint(text.substring(0, opener)));
 						result.push($this.scriptPrint(text.substring(opener+tag[0].length, closer)));
 					}
 					
-					text = text.substring((closer2 == null) ? closer+tag[1].length : closer2);
+					text = text.substring((closer2 === null) ? closer+tag[1].length : closer2);
 				}
 				// If there are still text, it will be pushed to array
 				// So we won't stuck in an infinite loop
-				else if(text){
+				else if(text)
+				{
 					result.push($this.textPrint(text));
 					text = '';
 				}
 			}
 	
 			return result.join('\n');	
-		}
+		};
 	
 	
 		/*
@@ -290,7 +297,7 @@ $.Chain =
 		 */
 		return function($text)
 		{
-			var $fn;
+			var $fn = function(){};
 			try
 			{
 				eval('$fn = '+ $this.closure[0]+$this.parser($text)+$this.closure[1]);
@@ -298,12 +305,11 @@ $.Chain =
 			catch(e)
 			{
 				throw "Parsing Error";
-				$fn = function(){};
 			}
 			
 			return $fn;
 		};
-	})()
+	}()
 };
 	
 })(jQuery);

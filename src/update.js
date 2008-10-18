@@ -34,14 +34,14 @@ $.Chain.service('update', {
 	handler: function(opt)
 	{
 		if(typeof opt == 'function')
-			return this.bind(opt);
+			{return this.bind(opt);}
 		else
-			return this.trigger(opt);
+			{return this.trigger(opt);}
 	},
 	
 	/**
 	 * If you pass a function to update, it will bind it to the update event.
-	 * just like jQuery’s @click()@ or @mouseover()@.
+	 * just like jQuerys @click()@ or @mouseover()@.
 	 * 
 	 * @alias update(fn)
 	 * @alias jQuery.Chain.services.update.bind
@@ -89,7 +89,7 @@ $.Chain.service('update', {
 		this.element.triggerHandler('preupdate', this.element.item());
 		
 		if(opt == 'hard')
-			this.element.items(true).each(function(){$(this).update();});
+			{this.element.items(true).each(function(){$(this).update();});}
 		
 		this.element.triggerHandler('update', this.element.item());
 		
