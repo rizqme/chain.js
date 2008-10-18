@@ -8,9 +8,9 @@
 		<script src="../build/chain.js" type="text/javascript" charset="utf-8"></script>
 	</head>
 	<body>
-		 <div style="color:#444;border:1px solid #BBB;" id="persons">
-			<div style="background:#DCE9F4;padding: 0.3em;margin:1px;" class="item"><span class="first">First</span> <span class="last">Last</span></div>
-		</div>
+		<select id="persons">
+			<option>Person</option>
+		</select>
 		<script type="text/javascript" charset="utf-8">
 			$('#persons')
 				.items([
@@ -19,7 +19,12 @@
 					{first:'Alessandro', last:'Volta'},
 					{first:'Blaise', last:'Pascal'}
 				])
-				.chain();
+				.chain({
+					self: {
+						value: '{first} {last}',
+						content: '{first} {last}'
+					}
+				});
 		</script>
 	</body>
 </html>
