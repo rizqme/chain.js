@@ -414,8 +414,8 @@ $.Chain.service('items', {
 	 */ 
 	$replace: function(cmd, items)
 	{
-		if(this.linkElement)
-			{return this.element;}
+		if(this.linkElement && arguments.callee.caller != this.linkUpdater)
+			{alert('true');return this.element;}
 		
 		if(typeof cmd != 'string')
 			{items = cmd;}
@@ -565,7 +565,7 @@ $.Chain.service('items', {
 			// Create Updater Function
 			this.linkUpdater = function()
 			{
-				self.element.items('replace', self.linkFunction());
+				self.$replace(self.linkFunction());
 			};
 			
 			// Bind updater to linked element
