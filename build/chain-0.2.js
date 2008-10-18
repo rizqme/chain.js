@@ -1891,7 +1891,7 @@ $.Chain.service('items', {
 	$replace: function(cmd, items)
 	{
 		if(this.linkElement && arguments.callee.caller != this.linkUpdater)
-			{alert('true');return this.element;}
+			{return this.element;}
 		
 		if(typeof cmd != 'string')
 			{items = cmd;}
