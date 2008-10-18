@@ -41,7 +41,7 @@ $.Chain =
 	 * @alias jQuery.Chain.version
 	 * @property {String}
 	 */ 
-	version: '0.1.9b',
+	version: '0.2',
 	
 	/**
 	 * Tag for use in @jQuery.Chain.parse@ (which is used in CustomUpdater).
