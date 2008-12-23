@@ -2245,20 +2245,21 @@ $.Chain.extend('items', {
 		{
 			'number': function(a, b){
 				return parseFloat(($(a).item()[name]+'').match(/\d+/gi)[0])
-					> parseFloat(($(b).item()[name]+'').match(/\d+/gi)[0]);
+					- parseFloat(($(b).item()[name]+'').match(/\d+/gi)[0]);
 			},
 		
 			'default': function(a, b){
-				return $(a).item()[name] > $(b).item()[name];
+				return $(a).item()[name] > $(b).item()[name] ? 1 : -1;
 			}
 		};
 		
 		if(name)
 		{
 			var sortfn = opt.fn || sorter[opt.type] || sorter['default'];
-				
-			var array = this.element.items(true).get().sort(sortfn);
 			
+			var array = this.element.items(true).get().sort(sortfn);
+			alert($(array).map(function(){return $(this).item()[name]}).get().sort(function(a,b){return a < b;}));
+			return;
 			array = opt.desc ? array.reverse() : array;
 			
 			for(var i=0; i<array.length; i++)

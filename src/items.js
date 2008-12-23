@@ -326,7 +326,7 @@ $.Chain.service('items', {
 			else
 				{clone.item(this);}
 			
-			clone.chain(builder);
+			clone.chain(builder, true);
 		};
 		
 		push = false;
@@ -769,11 +769,11 @@ $.Chain.extend('items', {
 		{
 			'number': function(a, b){
 				return parseFloat(($(a).item()[name]+'').match(/\d+/gi)[0])
-					> parseFloat(($(b).item()[name]+'').match(/\d+/gi)[0]);
+					- parseFloat(($(b).item()[name]+'').match(/\d+/gi)[0]);
 			},
 		
 			'default': function(a, b){
-				return $(a).item()[name] > $(b).item()[name];
+				return $(a).item()[name] > $(b).item()[name] ? 1 : -1;
 			}
 		};
 		
