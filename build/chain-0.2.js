@@ -503,7 +503,7 @@ $.Chain.service('chain', {
 	 * @see jQuery.Chain.services.chain.handleUpdater
 	 * @see jQuery.Chain.services.chain.handleBuilder
 	 */ 
-	handler: function(obj)
+	handler: function(obj, bool)
 	{
 		// Backup items and item, all items will be stored in Buffer
 		this.element.items('backup');
@@ -512,7 +512,7 @@ $.Chain.service('chain', {
 		if(typeof obj == 'object')
 			{this.handleUpdater(obj);}
 		else if(typeof obj == 'function')
-			{this.handleBuilder(obj);}
+			{this.handleBuilder(obj, bool);}
 		
 		// Empty element, if @item@ it will filled again later
 		this.anchor.empty();
@@ -597,6 +597,10 @@ $.Chain.service('chain', {
 		var builder = rules.builder;
 		delete rules.builder;
 		
+		// Extract Options
+		this.options = rules.options || {};
+		delete rules.options;
+		
 		// Extract Anchor
 		if(rules.anchor)
 			{this.setAnchor(rules.anchor);}
@@ -619,7 +623,9 @@ $.Chain.service('chain', {
 				for(var j in rules[i])
 				{
 					if(typeof rules[i][j] == 'string')
-						{rules[i][j] = $.Chain.parse(rules[i][j]);}
+					{
+						rules[i][j] = $.Chain.parse(rules[i][j]);
+					}
 				}
 			}
 		}
@@ -706,6 +712,7 @@ $.Chain.service('chain', {
 	 * @alias jQuery.Chain.services.chain.handleBuilder
 	 * 
 	 * @param {Function} fn Builder Function
+	 * @param {Boolean} bool If true, it just use the builder provided. Not creating new Builder
 	 * 
 	 * @example
 	 * $('<div><div class="name">Name</div><div class="address">Address</div></div>')
@@ -725,9 +732,12 @@ $.Chain.service('chain', {
 	 * @see jQuery.Chain.services.chain.handleUpdater
 	 * @see jQuery.Chain.services.chain.createBuilder
 	 */ 
-	handleBuilder: function(fn)
+	handleBuilder: function(fn, bool)
 	{
-		this.builder = this.createBuilder(fn);
+		if(bool)
+			{this.builder = fn;}
+		else
+			{this.builder = this.createBuilder(fn);}
 	},
 	
 	
@@ -942,6 +952,34 @@ $.Chain.service('chain', {
 	$active: function()
 	{
 		return this.isActive;
+	},
+	
+	/**
+	 * Set/Get options
+	 * 
+	 * @alias chain('options')
+	 * @alias jQuery.Chain.services.chain.$options
+	 * 
+	 * @param {String} opt Option name
+	 * @param {Anything} val Option value
+	 * 
+	 * @return {Object} if no value given, it returns the value, otherwise the element itself
+	 */ 
+	
+	$options: function(opt, val)
+	{
+		this.options = this.options || {};
+		
+		if(arguments.length == 2)
+		{
+			this.options[opt] = val;
+			return this.element;
+		}
+		
+		else
+		{
+			return this.options[opt];
+		}
 	},
 	
 	/**
@@ -1802,7 +1840,7 @@ $.Chain.service('items', {
 			else
 				{clone.item(this);}
 			
-			clone.chain(builder);
+			clone.chain(builder, true);
 		};
 		
 		push = false;
@@ -2245,11 +2283,11 @@ $.Chain.extend('items', {
 		{
 			'number': function(a, b){
 				return parseFloat(($(a).item()[name]+'').match(/\d+/gi)[0])
-					> parseFloat(($(b).item()[name]+'').match(/\d+/gi)[0]);
+					- parseFloat(($(b).item()[name]+'').match(/\d+/gi)[0]);
 			},
 		
 			'default': function(a, b){
-				return $(a).item()[name] > $(b).item()[name];
+				return $(a).item()[name] > $(b).item()[name] ? 1 : -1;
 			}
 		};
 		
