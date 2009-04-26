@@ -95,9 +95,9 @@
 	
 	$.Chain.extend('items', {
 		
-		$serialize: function()
+		$serialize: function(o)
 		{
-			var data = this.$data();
+			var data = this.$data.call(this, o);
 			return JSON.serialize(data);
 		}
 		

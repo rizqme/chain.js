@@ -1,5 +1,8 @@
 Chain.js
 
+NOTICE: due to some github bug, link to the wiki is:
+http://wiki.github.com/raid-ox/chain.js/      <--- (notice the slash at the end)
+
 Chain.js is a jQuery plugin to bind javascript data to html and generate content using the data. It provides automatic data management and content generation. please see wiki for more information.
 USAGE
 

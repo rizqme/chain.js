@@ -315,7 +315,7 @@ $.Chain.service('item', {
 	/**
 	 * Get/Set Root element.
 	 * 
-	 * @alias item('root');
+	 * @alias item('root')
 	 * @alias jQuery.Chain.services.item.$root
 	 * 
 	 * @param {Object} root New Root element
